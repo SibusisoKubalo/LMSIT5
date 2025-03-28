@@ -1,5 +1,8 @@
 # LMSIT5
 
+# Project Idea:
+We are creating a Library Management System for a community library to manage books.
+
 # Group Leader: Sibusiso Kubalo
 
 # Members and Responsibility:
