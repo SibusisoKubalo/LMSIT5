@@ -1,8 +1,8 @@
 package org.example.Domain;
 
 //Mika'il Vallie 230259200
-// Log: BookUpdate
-//    : BuilderAdd
+// Log:BookUpdate
+//    :BuilderAdd
 
 public class Book {
     private String title, subject , author;
