@@ -1,8 +1,8 @@
 package org.example.Domain;
 
 // Mika'il Vallie 230259200
-// Log: CustomerUpdate
-//    : AddBuilderCustomer
+// Log:CustomerUpdate
+//    :AddBuilderCustomer
 
 public class Customer {
     private String username;
