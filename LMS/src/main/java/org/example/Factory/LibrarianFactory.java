@@ -1,10 +1,13 @@
 package org.example.Factory;
 
 
-import org.example.Domain.Librarian;
+import org.example.Domain.LibraryDatabase;
+import org.example.Domain.Book;
 
-public class LibrarianFactory {
-    public static Librarian createLibrarian(int id, String name) {
-        return new Librarian(id, name);
+public class LibraryDatabaseFactory {
+    public static LibraryDatabase createLibraryDatabase(List<Book> books) {
+        return new LibraryDatabase().Builder()
+                .Book(books)
+                .build();
     }
 }
