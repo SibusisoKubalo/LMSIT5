@@ -1,20 +1,36 @@
 package org.example.Service;
+/**
+ * LibraryService.java
+ *
+ * @author Sibusiso Kubalo
+ * Student Num: 218316038
+ */
 
 import org.example.Domain.Library;
 import org.example.Repository.LibraryRepository;
 
+import java.util.Map;
+
 public class LibraryService {
-    private final LibraryRepository libraryRepository = new LibraryRepository();
+    private LibraryRepository repository = new LibraryRepository();
 
-    public void createLibrary(Library library) {
-        libraryRepository.save(library);
+    public Library createLibrary(Library library) {
+        return repository.save(library);
     }
 
-    public Library findLibrary(int id) {
-        return libraryRepository.findById(id);
+    public Library getLibraryById(int id) {
+        return repository.findById(id);
     }
 
-    public void deleteLibrary(int id) {
-        libraryRepository.delete(id);
+    public Library updateLibrary(Library library) {
+        return repository.update(library);
+    }
+
+    public boolean deleteLibrary(int id) {
+        return repository.delete(id);
+    }
+
+    public Map<Integer, Library> getAllLibraries() {
+        return repository.findAll();
     }
 }
