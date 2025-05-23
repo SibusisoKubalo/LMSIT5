@@ -19,4 +19,3 @@ public class NotificationService {
         notificationRepository.delete(notificationId);
     }
 }
-

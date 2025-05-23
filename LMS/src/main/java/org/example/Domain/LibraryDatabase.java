@@ -8,23 +8,22 @@ import java.util.List;
 public class LibraryDatabase {
     private List<Book> books = new ArrayList<>();
 
-    private LibraryDatabase(Builder builder){
+    private LibraryDatabase(Builder builder) {
         this.books = builder.books;
     }
 
-    public static class Builder{
+    public static class Builder {
         private List<Book> books = new ArrayList<>();
 
-        public Builder addBook(Book book){
+        public Builder addBook(Book book) {
             this.books.add(book);
             return this;
         }
 
-        public LibraryDatabase build(){
+        public LibraryDatabase build() {
             return new LibraryDatabase(this);
         }
     }
-
 
     public void addBook(Book book) {
         books.add(book);
@@ -40,7 +39,7 @@ public class LibraryDatabase {
         System.out.println("Updating book records...");
     }
 
-    public void searchBook(String title) {
+    public List<Book> searchBook(String title) {
         List<Book> results = new ArrayList<>();
         for (Book book : books) {
             if (book.toString().toLowerCase().contains(title.toLowerCase())) {

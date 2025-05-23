@@ -18,4 +18,3 @@ public class CustomerService {
         customerRepository.delete(username);
     }
 }
-

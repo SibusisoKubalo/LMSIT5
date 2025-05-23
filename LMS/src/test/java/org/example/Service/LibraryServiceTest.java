@@ -20,7 +20,7 @@ public class LibraryServiceTest {
         Library library = LibraryFactory.createLibrary(1, "CPUT Library", "admin", "password123", 100, "admin@library.com");
         Library created = service.createLibrary(library);
         assertNotNull(created);
-        assertEquals("Central Library", created.getName());
+        assertEquals("CPUT Library", created.getName());
     }
 
     @Test

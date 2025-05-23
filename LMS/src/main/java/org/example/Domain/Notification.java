@@ -9,8 +9,7 @@ public class Notification {
     private Date dateCreated;
     private String content;
 
-    private Notification(){
-    }
+    private Notification() {}
 
     public Notification(Builder builder) {
         this.notificationId = builder.notificationId;
@@ -21,8 +20,8 @@ public class Notification {
     @Override
     public String toString() {
         return "Notification{" +
-                "notificationID=" + notificationID +
-                ", createOn=" + createOn +
+                "notificationId=" + notificationId +
+                ", dateCreated=" + dateCreated +
                 ", content='" + content + '\'' +
                 '}';
     }

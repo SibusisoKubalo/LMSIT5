@@ -7,39 +7,73 @@ package org.example.Repository;
  */
 
 import org.example.Domain.Librarian;
+import org.example.Util.DBConnection;
 
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LibrarianRepository {
-    private Map<Integer, Librarian> librarianMap = new HashMap<>();
-
     public Librarian save(Librarian librarian) {
-        librarianMap.put(librarian.getId(), librarian);
+        String sql = "INSERT INTO librarians (id, name) VALUES (?, ?) ON DUPLICATE KEY UPDATE name=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, librarian.getId());
+            stmt.setString(2, librarian.getName());
+            stmt.setString(3, librarian.getName());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
         return librarian;
     }
 
     public Librarian findById(int id) {
-        return librarianMap.get(id);
-    }
-
-    public Librarian update(Librarian librarian) {
-        if (librarianMap.containsKey(librarian.getId())) {
-            librarianMap.put(librarian.getId(), librarian);
-            return librarian;
+        String sql = "SELECT * FROM librarians WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Librarian(rs.getInt("id"), rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
+    public Librarian update(Librarian librarian) {
+        return save(librarian);
+    }
+
     public boolean delete(int id) {
-        if (librarianMap.containsKey(id)) {
-            librarianMap.remove(id);
-            return true;
+        String sql = "DELETE FROM librarians WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            int rows = stmt.executeUpdate();
+            return rows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return false;
     }
 
     public Map<Integer, Librarian> findAll() {
+        Map<Integer, Librarian> librarianMap = new HashMap<>();
+        String sql = "SELECT * FROM librarians";
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Librarian librarian = new Librarian(rs.getInt("id"), rs.getString("name"));
+                librarianMap.put(librarian.getId(), librarian);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return librarianMap;
     }
 }
