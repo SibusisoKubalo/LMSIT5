@@ -6,20 +6,24 @@ package org.example.Domain;
  * Author: Sibusiso Kubalo
  * Student Num: 218316038
  */
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
+@Entity
 public class Librarian {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
 
-    // Constructor with validation
-    public Librarian(int id, String name) {
-        if (id <= 0) {
-            throw new IllegalArgumentException("ID must be greater than 0");
-        }
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
-        }
-        this.id = id;
-        this.name = name;
+    private Librarian() {}
+
+    // Builder constructor
+    private Librarian(Builder builder) {
+        this.id = builder.id;
+        setName(builder.name);
     }
 
     // Getters and Setters
@@ -86,7 +90,26 @@ public class Librarian {
         System.out.println("Librarian logged out successfully.");
     }
 
-    // Override toString for better debugging
+    // Builder pattern for flexible creation
+    public static class Builder {
+        private int id;
+        private String name;
+
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Librarian build() {
+            return new Librarian(this);
+        }
+    }
+
     @Override
     public String toString() {
         return "Librarian{" +

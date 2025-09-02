@@ -1,12 +1,22 @@
 package org.example.Domain;
 
-//Mika'il Vallie 230259200
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
+// Mika'il Vallie 230259200
 // Log:BookUpdate
 //    :BuilderAdd
 
+@Entity
 public class Book {
-    private String title, subject, author;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookId;
+    private String title;
+    private String subject;
+    private String author;
 
     private Book() {}
 
@@ -16,6 +26,16 @@ public class Book {
         this.subject = builder.subject;
         this.author = builder.author;
     }
+
+    // Getters and setters for JPA
+    public int getBookId() { return bookId; }
+    public void setBookId(int bookId) { this.bookId = bookId; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getSubject() { return subject; }
+    public void setSubject(String subject) { this.subject = subject; }
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
 
     @Override
     public String toString() {
@@ -60,4 +80,3 @@ public class Book {
         }
     }
 }
-

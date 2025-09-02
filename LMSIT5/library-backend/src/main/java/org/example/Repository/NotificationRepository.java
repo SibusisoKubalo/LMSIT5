@@ -6,16 +6,17 @@ import org.example.Util.DBConnection;
 import java.sql.*;
 
 public class NotificationRepository {
-    public void save(Notification notification) {
+    public boolean save(Notification notification) {
         String sql = "INSERT INTO notifications (notificationId, content) VALUES (?, ?) ON DUPLICATE KEY UPDATE content=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, notification.getNotificationId());
             stmt.setString(2, notification.getContent());
             stmt.setString(3, notification.getContent());
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -37,14 +38,15 @@ public class NotificationRepository {
         return null;
     }
 
-    public void delete(int notificationId) {
+    public boolean delete(int notificationId) {
         String sql = "DELETE FROM notifications WHERE notificationId = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, notificationId);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

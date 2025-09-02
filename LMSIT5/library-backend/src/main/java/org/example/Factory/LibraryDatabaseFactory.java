@@ -4,11 +4,14 @@ package org.example.Factory;
 
 import org.example.Domain.LibraryDatabase;
 import org.example.Domain.Book;
+import java.util.List;
 
 public class LibraryDatabaseFactory {
     public static LibraryDatabase createLibraryDatabase(List<Book> books) {
-        return new LibraryDatabase().Builder()
-                .Book(books)
-                .build();
+        LibraryDatabase.Builder builder = new LibraryDatabase.Builder();
+        for (Book book : books) {
+            builder.addBook(book);
+        }
+        return builder.build();
     }
 }

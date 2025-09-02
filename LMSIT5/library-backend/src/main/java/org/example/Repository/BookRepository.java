@@ -6,7 +6,7 @@ import org.example.Util.DBConnection;
 import java.sql.*;
 
 public class BookRepository {
-    public void save(Book book) {
+    public boolean save(Book book) {
         String sql = "INSERT INTO books (bookId, title, subject, author) VALUES (?, ?, ?, ?) " +
                 "ON DUPLICATE KEY UPDATE title=?, subject=?, author=?";
         try (Connection conn = DBConnection.getConnection();
@@ -18,9 +18,11 @@ public class BookRepository {
             stmt.setString(5, book.getTitle());
             stmt.setString(6, book.getSubject());
             stmt.setString(7, book.getAuthor());
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            //logger in production code
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -44,14 +46,15 @@ public class BookRepository {
         return null;
     }
 
-    public void delete(int bookId) {
+    public boolean delete(int bookId) {
         String sql = "DELETE FROM books WHERE bookId = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, bookId);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

@@ -13,6 +13,22 @@ public class LibrarianFactory {
         if (id <= 0 || name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Invalid input for creating Librarian");
         }
-        return new Librarian(id, name);
+        return new Librarian.Builder()
+                .id(id)
+                .name(name)
+                .build();
+    }
+
+    public static Librarian createLibrarianWithName(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
+        return new Librarian.Builder()
+                .name(name)
+                .build();
+    }
+
+    public static Librarian createEmptyLibrarian() {
+        return new Librarian.Builder().build();
     }
 }

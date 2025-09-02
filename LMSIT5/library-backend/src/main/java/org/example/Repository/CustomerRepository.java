@@ -6,16 +6,17 @@ import org.example.Util.DBConnection;
 import java.sql.*;
 
 public class CustomerRepository {
-    public void save(Customer customer) {
+    public boolean save(Customer customer) {
         String sql = "INSERT INTO customers (username, password) VALUES (?, ?) ON DUPLICATE KEY UPDATE password=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, customer.getUsername());
             stmt.setString(2, customer.getPassword());
             stmt.setString(3, customer.getPassword());
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -37,14 +38,15 @@ public class CustomerRepository {
         return null;
     }
 
-    public void delete(String username) {
+    public boolean delete(String username) {
         String sql = "DELETE FROM customers WHERE username = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

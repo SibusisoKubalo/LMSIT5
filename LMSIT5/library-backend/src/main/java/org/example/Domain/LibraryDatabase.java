@@ -1,16 +1,37 @@
+
 package org.example.Domain;
 
 // Ayrton Williams 220086168
 
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
+@Entity
 public class LibraryDatabase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @OneToMany
+    @JoinColumn(name = "library_database_id")
     private List<Book> books = new ArrayList<>();
+
+    // No-args constructor for JPA
+    private LibraryDatabase() {}
 
     private LibraryDatabase(Builder builder) {
         this.books = builder.books;
     }
+
+    public int getId() { return id; }
+    public List<Book> getBooks() { return books; }
+    public void setBooks(List<Book> books) { this.books = books; }
 
     public static class Builder {
         private List<Book> books = new ArrayList<>();
@@ -59,7 +80,8 @@ public class LibraryDatabase {
     @Override
     public String toString() {
         return "LibraryDatabase{" +
-                "books=" + books +
+                "id=" + id +
+                ", books=" + books +
                 '}';
     }
 }

@@ -14,19 +14,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LibrarianRepository {
-    public Librarian save(Librarian librarian) {
+    public boolean save(Librarian librarian) {
         String sql = "INSERT INTO librarians (id, name) VALUES (?, ?) ON DUPLICATE KEY UPDATE name=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, librarian.getId());
             stmt.setString(2, librarian.getName());
             stmt.setString(3, librarian.getName());
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
-        return librarian;
     }
 
     public Librarian findById(int id) {
@@ -44,7 +43,7 @@ public class LibrarianRepository {
         return null;
     }
 
-    public Librarian update(Librarian librarian) {
+    public boolean update(Librarian librarian) {
         return save(librarian);
     }
 
@@ -53,12 +52,11 @@ public class LibrarianRepository {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            int rows = stmt.executeUpdate();
-            return rows > 0;
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public Map<Integer, Librarian> findAll() {
