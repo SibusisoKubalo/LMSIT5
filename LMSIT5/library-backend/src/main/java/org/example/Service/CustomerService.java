@@ -1,21 +1,31 @@
-
 package org.example.Service;
 
 import org.example.Domain.Customer;
 import org.example.Repository.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+@Service
 public class CustomerService {
-    private final CustomerRepository customerRepository = new CustomerRepository();
+    @Autowired
+    private CustomerRepository customerRepository;
 
     public boolean registerCustomer(Customer customer) {
-        return customerRepository.save(customer);
+        return customerRepository.save(customer) != null;
     }
 
     public Customer findCustomer(String username) {
-        return customerRepository.findByUsername(username);
+        Optional<Customer> customer = customerRepository.findById(username);
+        return customer.orElse(null);
     }
 
     public boolean deleteCustomer(String username) {
-        return customerRepository.delete(username);
+        if (customerRepository.existsById(username)) {
+            customerRepository.deleteById(username);
+            return true;
+        }
+        return false;
     }
 }

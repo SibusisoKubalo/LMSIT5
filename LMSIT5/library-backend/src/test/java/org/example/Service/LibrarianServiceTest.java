@@ -20,7 +20,7 @@ public class LibrarianServiceTest {
         Librarian librarian = LibrarianFactory.createLibrarian(1, "Sibusiso Kubalo");
         Librarian created = service.createLibrarian(librarian);
         assertNotNull(created);
-        assertEquals("Sibusiso Kubalo", created.getName());
+        assertEquals("Sibusiso Kubalo", created);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class LibrarianServiceTest {
         Librarian updatedLibrarian = new Librarian(1, "Amahle Kubalo");
         Librarian updated = service.updateLibrarian(updatedLibrarian);
         assertNotNull(updated);
-        assertEquals("Amahle Kubalo", updated.getName());
+        assertEquals("Amahle Kubalo", updated);
     }
 
     @Test

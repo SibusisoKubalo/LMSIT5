@@ -1,52 +1,11 @@
 package org.example.Repository;
 
 import org.example.Domain.Customer;
-import org.example.Util.DBConnection;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.sql.*;
-
-public class CustomerRepository {
-    public boolean save(Customer customer) {
-        String sql = "INSERT INTO customers (username, password) VALUES (?, ?) ON DUPLICATE KEY UPDATE password=?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, customer.getUsername());
-            stmt.setString(2, customer.getPassword());
-            stmt.setString(3, customer.getPassword());
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public Customer findByUsername(String username) {
-        String sql = "SELECT * FROM customers WHERE username = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new Customer.Builder()
-                        .username(rs.getString("username"))
-                        .password(rs.getString("password"))
-                        .build();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public boolean delete(String username) {
-        String sql = "DELETE FROM customers WHERE username = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+@Repository
+public interface CustomerRepository extends JpaRepository<Customer, String> {
+    // You can add custom query methods if needed, e.g.:
+    // Optional<Customer> findByUsername(String username);
 }

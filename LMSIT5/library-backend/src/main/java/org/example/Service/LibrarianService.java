@@ -8,29 +8,39 @@ package org.example.Service;
 
 import org.example.Domain.Librarian;
 import org.example.Repository.LibrarianRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import java.util.List;
+import java.util.Optional;
 
+@Service
 public class LibrarianService {
-    private LibrarianRepository repository = new LibrarianRepository();
+    @Autowired
+    private LibrarianRepository repository;
 
     public Librarian createLibrarian(Librarian librarian) {
         return repository.save(librarian);
     }
 
     public Librarian getLibrarianById(int id) {
-        return repository.findById(id);
+        Optional<Librarian> librarian = repository.findById(id);
+        return librarian.orElse(null);
     }
 
     public Librarian updateLibrarian(Librarian librarian) {
-        return repository.update(librarian);
+        return repository.save(librarian);
     }
 
     public boolean deleteLibrarian(int id) {
-        return repository.delete(id);
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
-    public Map<Integer, Librarian> getAllLibrarians() {
+    public List<Librarian> getAllLibrarians() {
         return repository.findAll();
     }
 }

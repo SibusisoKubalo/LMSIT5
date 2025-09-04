@@ -20,7 +20,7 @@ public class Library {
     private int num;
     private String email;
 
-    private Library() {}
+    public Library(int i, String updatedLibrary, String admin, String password123, int i1, String mail) {}
 
     // Builder constructor
     private Library(Builder builder) {

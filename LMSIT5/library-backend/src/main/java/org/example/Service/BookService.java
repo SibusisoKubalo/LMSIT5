@@ -2,19 +2,27 @@ package org.example.Service;
 
 import org.example.Domain.Book;
 import org.example.Repository.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class BookService {
-    private final BookRepository bookRepository = new BookRepository();
+    @Autowired
+    private BookRepository bookRepository;
 
     public boolean addBook(Book book) {
-        return bookRepository.save(book);
+        return bookRepository.save(book) != null;
     }
 
     public Book findBook(int bookId) {
-        return bookRepository.findById(bookId);
+        return bookRepository.findById(bookId).orElse(null);
     }
 
     public boolean deleteBook(int bookId) {
-        return bookRepository.delete(bookId);
+        if (bookRepository.existsById(bookId)) {
+            bookRepository.deleteById(bookId);
+            return true;
+        }
+        return false;
     }
 }

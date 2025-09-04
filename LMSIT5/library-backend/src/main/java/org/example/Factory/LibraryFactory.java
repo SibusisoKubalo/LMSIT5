@@ -9,7 +9,7 @@ package org.example.Factory;
 import org.example.Domain.Library;
 
 public class LibraryFactory {
-    public static Library createLibrary(int id, String name) {
+    public static Library createLibrary(int id, String name, String admin, String password123, int i, String mail) {
         return new Library.Builder()
                 .id(id)
                 .name(name)

@@ -12,6 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="LMS" options="-parameters" />
       <module name="LMSIT5" options="" />
     </option>
   </component>
