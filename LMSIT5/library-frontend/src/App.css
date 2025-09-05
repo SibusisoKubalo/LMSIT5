@@ -1,11 +1,10 @@
-/* Layout */
+
 .app-layout {
   display: flex;
   height: 100vh;
   font-family: sans-serif;
 }
 
-/* Sidebar */
 .sidebar {
   width: 220px;
   background: #2d3436;
@@ -39,7 +38,6 @@
   color: #00cec9;
 }
 
-/* Main content */
 .main-content {
   flex: 1;
   padding: 2rem;
@@ -47,7 +45,6 @@
   overflow-y: auto;
 }
 
-/* Dashboard */
 .dashboard-title {
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
@@ -81,19 +78,16 @@
   color: #2d3436;
 }
 
-/* Page container */
 .page-container {
   padding: 1rem;
 }
 
-/* Page title */
 .page-title {
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
   font-weight: 600;
 }
 
-/* Tables */
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -113,7 +107,6 @@
   font-weight: 600;
 }
 
-/* Cards list (Notifications) */
 .card-list {
   list-style: none;
   padding: 0;
@@ -127,7 +120,7 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-/* Info card (Library page) */
+
 .info-card {
   background: #fff;
   padding: 2rem;
