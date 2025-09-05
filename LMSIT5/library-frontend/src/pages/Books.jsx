@@ -3,15 +3,13 @@ import React, { useEffect, useState } from "react";
 function Books() {
   const [books, setBooks] = useState([]);
   const [newBook, setNewBook] = useState({ title: "", subject: "", author: "" });
-  const [bookId, setBookId] = useState(""); // for find by ID
+  const [bookId, setBookId] = useState("");
   const [foundBook, setFoundBook] = useState(null);
 
-  // Fetch all books on load
   useEffect(() => {
     fetchAllBooks();
   }, []);
 
-  // GET all books
   const fetchAllBooks = async () => {
     try {
       const response = await fetch("http://localhost:8080/books");
@@ -22,7 +20,6 @@ function Books() {
     }
   };
 
-  // POST add book
   const handleAddBook = async (e) => {
     e.preventDefault();
     try {
@@ -40,7 +37,7 @@ function Books() {
     }
   };
 
-  // GET book by ID
+
   const handleFindBook = async () => {
     if (!bookId) return;
     try {
@@ -57,7 +54,6 @@ function Books() {
     }
   };
 
-  // DELETE book
   const handleDeleteBook = async (id) => {
     try {
       const response = await fetch(`http://localhost:8080/books/${id}`, {
@@ -75,7 +71,6 @@ function Books() {
     <div>
       <h2>📚 Books</h2>
 
-      {/* Add Book Form */}
       <form onSubmit={handleAddBook}>
         <input
           type="text"
@@ -101,7 +96,6 @@ function Books() {
         <button type="submit">Add Book</button>
       </form>
 
-      {/* Find Book by ID */}
       <div style={{ marginTop: "20px" }}>
         <input
           type="number"
@@ -117,7 +111,6 @@ function Books() {
         )}
       </div>
 
-      {/* Books List */}
       <ul>
         {books.map((book) => (
           <li key={book.bookId}>

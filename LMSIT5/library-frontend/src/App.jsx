@@ -10,7 +10,7 @@ import "./App.css";
 export default function App() {
   return (
     <div className="app-layout">
-      {/* Sidebar */}
+   
       <aside className="sidebar">
         <h1 className="logo">📚 Library</h1>
         <nav>
@@ -25,7 +25,6 @@ export default function App() {
         </nav>
       </aside>
 
-      {/* Main content */}
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
@@ -37,6 +36,7 @@ export default function App() {
           <Route path="/library" element={<Library />} />
         </Routes>
       </main>
+      
     </div>
   );
 }

@@ -10,7 +10,6 @@ export default function Librarians() {
 
   const API_URL = "http://localhost:8080/api/librarians";
 
-  // Fetch all librarians
   const fetchLibrarians = () => {
     setLoading(true);
     axios
@@ -24,12 +23,10 @@ export default function Librarians() {
     fetchLibrarians();
   }, []);
 
-  // Handle form input changes
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Add or update librarian
 const handleSubmit = (e) => {
   e.preventDefault();
   if (editing) {
@@ -52,7 +49,6 @@ const handleSubmit = (e) => {
   }
 };
 
-  // Delete librarian
   const handleDelete = (id) => {
     axios
       .delete(`${API_URL}/${id}`)
@@ -60,7 +56,6 @@ const handleSubmit = (e) => {
       .catch((err) => setError(err));
   };
 
-  // Start editing a librarian
   const handleEdit = (librarian) => {
     setForm({ id: librarian.id, name: librarian.name });
     setEditing(true);
@@ -73,7 +68,6 @@ const handleSubmit = (e) => {
     <div className="page-container">
       <h2 className="page-title">📚 Librarians</h2>
 
-      {/* Form for adding/updating */}
       <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
         <input
           type="text"
@@ -86,7 +80,6 @@ const handleSubmit = (e) => {
         <button type="submit">{editing ? "Update" : "Add"}</button>
       </form>
 
-      {/* Table listing */}
       <table className="table">
         <thead>
           <tr>

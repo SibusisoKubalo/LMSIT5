@@ -7,7 +7,6 @@ export default function Customers() {
   const [error, setError] = useState(null);
   const [newCustomer, setNewCustomer] = useState({ username: "", password: "" });
 
-  // Fetch all customers
   const fetchCustomers = () => {
     setLoading(true);
     axios.get("http://localhost:8080/api/customers")
@@ -20,7 +19,6 @@ export default function Customers() {
     fetchCustomers();
   }, []);
 
-  // Register new customer
   const registerCustomer = () => {
     axios.post("http://localhost:8080/api/customers/register", newCustomer)
       .then(res => {
@@ -34,7 +32,6 @@ export default function Customers() {
       .catch(err => console.error("Error registering customer:", err));
   };
 
-  // Delete customer
   const deleteCustomer = (id) => {
     axios.delete(`http://localhost:8080/api/customers/${id}`)
       .then(res => {
@@ -47,7 +44,6 @@ export default function Customers() {
       .catch(err => console.error("Error deleting customer:", err));
   };
 
-  // Get customer count
   const getCustomerCount = () => {
     axios.get("http://localhost:8080/api/customers/count")
       .then(res => alert(`Customer count: ${res.data}`))
@@ -61,7 +57,6 @@ export default function Customers() {
     <div className="page-container">
       <h2 className="page-title">👤 Customers</h2>
 
-      {/* Register Customer */}
       <div style={{ marginBottom: "20px" }}>
         <input
           placeholder="Username"
@@ -77,10 +72,8 @@ export default function Customers() {
         <button onClick={registerCustomer}>Register</button>
       </div>
 
-      {/* Customer Count */}
       <button onClick={getCustomerCount} style={{ marginBottom: "20px" }}>Get Customer Count</button>
 
-      {/* Customers Table */}
       <table className="table">
         <thead>
           <tr>
