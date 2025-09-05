@@ -7,7 +7,7 @@ export default function Notifications() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get("/api/notifications")
+    axios.get("http://localhost:8080/api/notifications")
       .then(res => setNotifications(res.data))
       .catch(err => setError(err))
       .finally(() => setLoading(false));
@@ -20,10 +20,13 @@ export default function Notifications() {
     <div className="page-container">
       <h2 className="page-title">🔔 Notifications</h2>
       <ul className="card-list">
-        {notifications.map(n => (
-          <li key={n.id} className="card-item">{n.message}</li>
-        ))}
-      </ul>
+  {notifications.map(n => (
+    <li key={n.notificationId} className="card-item">
+      {n.content} <br />
+      <small>{new Date(n.dateCreated).toLocaleString()}</small>
+    </li>
+  ))}
+</ul>
     </div>
   );
 }

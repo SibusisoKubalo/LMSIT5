@@ -4,6 +4,7 @@ import org.example.Domain.Book;
 import org.example.Repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class BookService {
@@ -24,5 +25,13 @@ public class BookService {
             return true;
         }
         return false;
+    }
+
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
+    }
+
+    public int getBookCount() {
+        return (int) bookRepository.count();
     }
 }

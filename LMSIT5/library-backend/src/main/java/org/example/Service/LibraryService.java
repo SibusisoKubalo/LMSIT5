@@ -45,4 +45,8 @@ public class LibraryService {
     public List<Library> getAllLibraries() {
         return repository.findAll();
     }
+
+    public long getLibraryCount() {
+        return repository.count();
+    }
 }
