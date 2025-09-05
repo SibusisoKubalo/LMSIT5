@@ -5,6 +5,8 @@ import org.example.Repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NotificationService {
     private final NotificationRepository notificationRepository;
@@ -34,4 +36,13 @@ public class NotificationService {
         }
         return false;
     }
+
+    public long getNotificationCount() {
+        return notificationRepository.count();
+    }
+
+    public List<Notification> getAllNotifications() {
+        return notificationRepository.findAll();
+    }
+
 }
