@@ -34,4 +34,9 @@ public class BookService {
     public int getBookCount() {
         return (int) bookRepository.count();
     }
+
+    public boolean borrowBook(int bookId) {
+        // Placeholder: In a real system, associate book with user and mark as borrowed
+        return bookRepository.existsById(bookId);
+    }
 }
