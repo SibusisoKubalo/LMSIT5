@@ -36,7 +36,7 @@ public class SecurityConfig {
         http
             .csrf().disable()
             .authorizeHttpRequests()
-                .requestMatchers("/api/auth/signup", "/api/auth/login").permitAll()
+                .requestMatchers("/", "/api", "/api/auth/signup", "/api/auth/login").permitAll()
                 .requestMatchers("/api/books/add", "/api/books/delete/**").hasAuthority("LIBRARIAN")
                 .requestMatchers("/api/books/borrow/**").hasAuthority("CUSTOMER")
                 .anyRequest().authenticated()
@@ -45,4 +45,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-
