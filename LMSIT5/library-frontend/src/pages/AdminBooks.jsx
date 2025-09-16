@@ -1,8 +1,8 @@
-export default function Books() {
+export default function AdminBooks() {
   const books = [
-    { id: 1, title: "Harry Potter", author: "J.K. Rowling", available: true },
-    { id: 2, title: "The Hobbit", author: "J.R.R. Tolkien", available: false },
-    { id: 3, title: "1984", author: "George Orwell", available: true },
+    { id: 1, title: "Harry Potter", author: "J.K. ", available: true },
+    { id: 2, title: "The Hobbit", author: "J.R.R", available: false },
+    { id: 3, title: "1984", author: "George ", available: true },
   ];
 
   return (
