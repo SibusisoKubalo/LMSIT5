@@ -4,9 +4,9 @@
 -- ------------------------------------------------------
 -- Server version	8.0.41
 
-    -- Ayrton Williams 220086168
+-- Ayrton Williams 220086168
 
---
+-------------------------------------------------------------------------------------------------
 -- Table structure for table `book`
 --
 
@@ -19,9 +19,9 @@ CREATE TABLE `book` (
   `title` varchar(255) DEFAULT NULL,
   `library_database_id` int DEFAULT NULL,
   PRIMARY KEY (`book_id`),
-  KEY `FK6wo8f1v8vjfb1otap2ldxtilc` (`library_database_id`),
-  CONSTRAINT `FK6wo8f1v8vjfb1otap2ldxtilc` FOREIGN KEY (`library_database_id`) REFERENCES `library_database` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  --KEY `FK6wo8f1v8vjfb1otap2ldxtilc` (`library_database_id`),
+  --CONSTRAINT `FK6wo8f1v8vjfb1otap2ldxtilc` FOREIGN KEY (`library_database_id`) REFERENCES `library_database` (`id`)
+);
 
 --
 -- Dumping data for table `book`
@@ -30,7 +30,7 @@ CREATE TABLE `book` (
 LOCK TABLES `book` WRITE;
 UNLOCK TABLES;
 
---
+-------------------------------------------------------------------------------------------------
 -- Table structure for table `books`
 --
 
@@ -41,8 +41,13 @@ CREATE TABLE `books` (
   `title` varchar(255) NOT NULL,
   `subject` varchar(255) DEFAULT NULL,
   `author` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`bookId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `total_copies` INT NOT NULL DEFAULT 1,
+  `available_copies` INT NOT NULL DEFAULT 1,
+  `location` varchar(255) NOT NULL ,
+  `status` ENUM('AVAILABLE','ON_LOAN','RESERVED','DAMAGED') DEFAULT 'AVAILABLE';
+
+PRIMARY KEY (`bookId`)
+);
 
 --
 -- Dumping data for table `books`
@@ -51,7 +56,7 @@ CREATE TABLE `books` (
 LOCK TABLES `books` WRITE;
 UNLOCK TABLES;
 
---
+-------------------------------------------------------------------------------------------------
 -- Table structure for table `customer`
 --
 
@@ -62,7 +67,7 @@ CREATE TABLE `customer` (
   `password` varchar(255) DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Dumping data for table `customer`
@@ -71,7 +76,7 @@ CREATE TABLE `customer` (
 LOCK TABLES `customer` WRITE;
 UNLOCK TABLES;
 
---
+------------------------------------------------------------------------------------------------
 -- Table structure for table `customers`
 --
 
@@ -81,7 +86,7 @@ CREATE TABLE `customers` (
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Dumping data for table `customers`
@@ -90,7 +95,7 @@ CREATE TABLE `customers` (
 LOCK TABLES `customers` WRITE;
 UNLOCK TABLES;
 
---
+------------------------------------------------------------------------------------------------
 -- Table structure for table `librarian`
 --
 
@@ -100,7 +105,7 @@ CREATE TABLE `librarian` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Dumping data for table `librarian`
@@ -109,7 +114,7 @@ CREATE TABLE `librarian` (
 LOCK TABLES `librarian` WRITE;
 UNLOCK TABLES;
 
---
+------------------------------------------------------------------------------------------------
 -- Table structure for table `librarians`
 --
 
@@ -119,7 +124,7 @@ CREATE TABLE `librarians` (
   `id` int NOT NULL,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Dumping data for table `librarians`
@@ -128,7 +133,7 @@ CREATE TABLE `librarians` (
 LOCK TABLES `librarians` WRITE;
 UNLOCK TABLES;
 
---
+------------------------------------------------------------------------------------------------
 -- Table structure for table `libraries`
 --
 
@@ -142,7 +147,7 @@ CREATE TABLE `libraries` (
   `num` int DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Dumping data for table `libraries`
@@ -151,7 +156,7 @@ CREATE TABLE `libraries` (
 LOCK TABLES `libraries` WRITE;
 UNLOCK TABLES;
 
---
+------------------------------------------------------------------------------------------------
 -- Table structure for table `library`
 --
 
@@ -165,7 +170,7 @@ CREATE TABLE `library` (
   `password` varchar(255) DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Dumping data for table `library`
@@ -174,7 +179,7 @@ CREATE TABLE `library` (
 LOCK TABLES `library` WRITE;
 UNLOCK TABLES;
 
---
+--------------------------------------------------------------------------------------------------
 -- Table structure for table `library_database`
 --
 
@@ -183,7 +188,7 @@ DROP TABLE IF EXISTS `library_database`;
 CREATE TABLE `library_database` (
   `id` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Dumping data for table `library_database`
@@ -192,7 +197,7 @@ CREATE TABLE `library_database` (
 LOCK TABLES `library_database` WRITE;
 UNLOCK TABLES;
 
---
+--------------------------------------------------------------------------------------------------
 -- Table structure for table `notification`
 --
 
@@ -203,7 +208,7 @@ CREATE TABLE `notification` (
   `content` varchar(255) DEFAULT NULL,
   `date_created` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`notification_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Dumping data for table `notification`
@@ -212,7 +217,7 @@ CREATE TABLE `notification` (
 LOCK TABLES `notification` WRITE;
 UNLOCK TABLES;
 
---
+--------------------------------------------------------------------------------------------------
 -- Table structure for table `notifications`
 --
 
@@ -222,7 +227,7 @@ CREATE TABLE `notifications` (
   `notificationId` int NOT NULL,
   `content` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`notificationId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Dumping data for table `notifications`
@@ -232,8 +237,8 @@ LOCK TABLES `notifications` WRITE;
 UNLOCK TABLES;
 
 
---
--- Table structure for table `User`
+--------------------------------------------------------------------------------------------------
+-- Table structure for table `user`
 --
 
 DROP TABLE IF EXISTS `user`;
@@ -244,13 +249,63 @@ CREATE TABLE `user` (
   `password` varchar(255) DEFAULT NULL,
   `role` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Dumping data for table `user`
 --
 
 LOCK TABLES `user` WRITE;
+UNLOCK TABLES;
+
+-------------------------------------------------------------------------------------------------
+-- Table structure for table `borrow_transaction`
+--
+
+DROP TABLE IF EXISTS `borrow_transaction`;
+
+CREATE TABLE borrow_transaction (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `book_id` INT NOT NULL,
+    `customer_id` INT NOT NULL,
+    `borrow_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `due_date` DATETIME NOT NULL,
+    `return_date` DATETIME,
+    `fine` DECIMAL(10,2) DEFAULT 0,
+    FOREIGN KEY (book_id) REFERENCES book(book_id),
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+);
+
+--
+-- Dumping data for table `borrow_transaction`
+--
+
+LOCK TABLES `borrow_transaction` WRITE;
+UNLOCK TABLES;
+
+--------------------------------------------------------------------------------------------------
+-- Table structure for table `reservation`
+--
+
+DROP TABLE IF EXISTS `reservation`;
+
+CREATE TABLE reservation (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `book_id` INT NOT NULL,
+    `customer_id` INT NOT NULL,
+    `reservation_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `notification_sent` BOOLEAN DEFAULT FALSE,
+    `fulfilled` BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (book_id) REFERENCES book(book_id),
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+);
+
+
+--
+-- Dumping data for table `reservation`
+--
+
+LOCK TABLES `reservation` WRITE;
 UNLOCK TABLES;
 
 
