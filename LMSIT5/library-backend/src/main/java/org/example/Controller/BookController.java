@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")
+@CrossOrigin(origins = "http://localhost:5173")
 public class BookController {
 
     private final BookService bookService;
@@ -28,6 +29,7 @@ public class BookController {
         boolean success = bookService.addBook(book);
         return success ? "Book added successfully!" : "Failed to add book.";
     }
+
 
     // ✅ Find by ID
     @GetMapping("/{id}")

@@ -1,4 +1,4 @@
-export default function Customers() {
+export default function AdminCustomers() {
   const customers = [
     { id: 1, name: "ice Smith", email: "ice@example.com" },
     { id: 2, name: "Bb Johnson", email: "bb@example.com" },

@@ -7,8 +7,8 @@ export default function UserHeader({ user, logout }) {
       <nav>
         <Link to="/">Home</Link>
         <Link to="/books">Books</Link>
-        <Link to="/notifications">Notifications</Link>
         <Link to="/library">Library</Link>
+        <Link to="/notifications">Notifications</Link>
       </nav>
 
       <div>

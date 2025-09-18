@@ -18,7 +18,7 @@ export default function AdminHeader({ }) {
         <Link to="/admin">Admin Home</Link>
         <Link to="/adminbooks">Manage Books</Link>
         <Link to="/admincustomers">Manage Users</Link>
-        <Link to="/adminlibrarians">Manage Librarians</Link>
+        <Link to="/adminlibrary">Manage Libraries</Link>
         <button onClick={logout}>Logout</button>
       </nav>
     </header>

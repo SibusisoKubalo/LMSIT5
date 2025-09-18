@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 // Mika'il Vallie 230259200
 // Log:BookUpdate
 //    :BuilderAdd
+//    :GenreAdd
 
 @Entity
 public class Book {
@@ -17,6 +18,7 @@ public class Book {
     private String title;
     private String subject;
     private String author;
+    private String genre;
 
     private Book() {}
 
@@ -25,17 +27,24 @@ public class Book {
         this.bookId = builder.bookId;
         this.subject = builder.subject;
         this.author = builder.author;
+        this.genre = builder.genre;
     }
 
-    // Getters and setters for JPA
+
     public int getBookId() { return bookId; }
     public void setBookId(int bookId) { this.bookId = bookId; }
+
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
+
     public String getSubject() { return subject; }
     public void setSubject(String subject) { this.subject = subject; }
+
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; }
+
+    public String getGenre() { return genre; }   // <-- GETTER
+    public void setGenre(String genre) { this.genre = genre; }
 
     @Override
     public String toString() {
@@ -43,6 +52,7 @@ public class Book {
                 "title='" + title + '\'' +
                 ", subject='" + subject + '\'' +
                 ", author='" + author + '\'' +
+                ", genre='" + genre + '\'' +
                 ", bookId=" + bookId +
                 '}';
     }
@@ -52,7 +62,7 @@ public class Book {
     }
 
     public static class Builder {
-        private String title, subject, author;
+        private String title, subject, author, genre;
         private int bookId;
 
         public Builder title(String title) {
@@ -67,6 +77,11 @@ public class Book {
 
         public Builder author(String author) {
             this.author = author;
+            return this;
+        }
+
+        public Builder genre(String genre) {
+            this.genre = genre;
             return this;
         }
 

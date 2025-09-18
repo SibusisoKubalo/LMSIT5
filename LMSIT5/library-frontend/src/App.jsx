@@ -13,7 +13,7 @@ import Signup from "./pages/Signup";
 
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminCustomers from "./pages/AdminCustomers";
-import AdminLibrarians from "./pages/AdminLibrarians";
+import AdminLibrary from "./pages/AdminLibrary";
 import AdminBooks from "./pages/AdminBooks";
 
 import "./App.css";
@@ -38,7 +38,7 @@ export default function App() {
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/adminbooks" element={<AdminBooks />} />
               <Route path="/admincustomers" element={<AdminCustomers />} />
-              <Route path="/adminlibrarians" element={<AdminLibrarians />} />
+              <Route path="/adminlibrary" element={<AdminLibrary />} />
             </Routes>
           </main>
         </div>

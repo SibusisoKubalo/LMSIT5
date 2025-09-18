@@ -1,4 +1,4 @@
-export default function Librarians() {
+export default function AdminLibrary() {
   const librarians = [
     { id: 1, name: "min One", email: "min1@example.com" },
     { id: 2, name: "min Two", email: "min2@example.com" },
