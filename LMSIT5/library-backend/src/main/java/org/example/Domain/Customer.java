@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -15,6 +17,11 @@ public class Customer {
     private int customerId;
     private String username;
     private String password;
+
+    @OneToMany(mappedBy = "customer")
+    private List<BorrowTransaction> borrowHistory;
+    @OneToMany(mappedBy = "customer")
+    private List<Reservation> reservations;
 
     private Customer() {}
 
@@ -31,6 +38,10 @@ public class Customer {
     public void setUsername(String username) { this.username = username; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+    public List<BorrowTransaction> getBorrowHistory() { return borrowHistory; }
+    public void setBorrowHistory(List<BorrowTransaction> borrowHistory) { this.borrowHistory = borrowHistory; }
+    public List<Reservation> getReservations() { return reservations; }
+    public void setReservations(List<Reservation> reservations) { this.reservations = reservations; }
 
     @Override
     public String toString() {
@@ -38,6 +49,8 @@ public class Customer {
                 "customerId=" + customerId +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", borrowHistory=" + (borrowHistory != null ? borrowHistory.size() : 0) +
+                ", reservations=" + (reservations != null ? reservations.size() : 0) +
                 '}';
     }
 
