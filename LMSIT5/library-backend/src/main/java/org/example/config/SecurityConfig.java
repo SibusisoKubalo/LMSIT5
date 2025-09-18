@@ -1,21 +1,23 @@
 package org.example.config;
 
+import org.example.Service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.example.Service.CustomUserDetailsService;
+
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
@@ -26,22 +28,24 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        return builder.build();
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder())
+                .and()
+                .build();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-            .authorizeHttpRequests()
-                .requestMatchers("/", "/api", "/api/auth/signup", "/api/auth/login").permitAll()
-                .requestMatchers("/api/books/add", "/api/books/delete/**").hasAuthority("LIBRARIAN")
-                .requestMatchers("/api/books/borrow/**").hasAuthority("CUSTOMER")
+                .csrf().disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/", "/api/auth/**").permitAll() // public pages and auth
+                .requestMatchers("/api/books/add", "/api/books/delete/**").hasAuthority("LIBRARIAN") // admin only
+                .requestMatchers("/api/books/borrow/**").hasAuthority("CUSTOMER") // customer only
                 .anyRequest().authenticated()
-            .and()
-            .formLogin().disable();
+                .and()
+                .formLogin().disable();
         return http.build();
     }
 }

@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 // Mika'il Vallie 230259200
 // Log:BookUpdate
 //    :BuilderAdd
+//    :GenreAdd
 
 @Entity
 public class Book {
@@ -17,6 +18,7 @@ public class Book {
     private String title;
     private String subject;
     private String author;
+    private String genre;
 
     private int totalCopies;
     private int availableCopies;
@@ -30,19 +32,26 @@ public class Book {
         this.bookId = builder.bookId;
         this.subject = builder.subject;
         this.author = builder.author;
+
+        this.genre = builder.genre;
+
         this.totalCopies = builder.totalCopies;
         this.availableCopies = builder.availableCopies;
         this.location = builder.location;
         this.status = builder.status;
+
     }
 
-    // Getters and setters for JPA
+
     public int getBookId() { return bookId; }
     public void setBookId(int bookId) { this.bookId = bookId; }
+
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
+
     public String getSubject() { return subject; }
     public void setSubject(String subject) { this.subject = subject; }
+
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; }
     public int getTotalCopies() { return totalCopies; }
@@ -54,12 +63,16 @@ public class Book {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
+    public String getGenre() { return genre; }   // <-- GETTER
+    public void setGenre(String genre) { this.genre = genre; }
+
     @Override
     public String toString() {
         return "Book{" +
                 "title='" + title + '\'' +
                 ", subject='" + subject + '\'' +
                 ", author='" + author + '\'' +
+                ", genre='" + genre + '\'' +
                 ", bookId=" + bookId +
                 ", totalCopies=" + totalCopies +
                 ", availableCopies=" + availableCopies +
@@ -73,7 +86,7 @@ public class Book {
     }
 
     public static class Builder {
-        private String title, subject, author;
+        private String title, subject, author, genre;
         private int bookId;
         private int totalCopies;
         private int availableCopies;
@@ -92,6 +105,11 @@ public class Book {
 
         public Builder author(String author) {
             this.author = author;
+            return this;
+        }
+
+        public Builder genre(String genre) {
+            this.genre = genre;
             return this;
         }
 
