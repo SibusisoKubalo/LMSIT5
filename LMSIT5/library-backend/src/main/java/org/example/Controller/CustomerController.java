@@ -1,6 +1,7 @@
 package org.example.Controller;
 
 import org.example.Domain.Customer;
+import org.example.Domain.CustomerDTO;
 import org.example.Service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -20,8 +22,10 @@ public class CustomerController {
 
     // Get all customers
     @GetMapping
-    public ResponseEntity<List<Customer>> getAllCustomers() {
-        List<Customer> customers = customerService.getAllCustomers();
+    public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
+        List<CustomerDTO> customers = customerService.getAllCustomers().stream()
+            .map(c -> new CustomerDTO(c.getCustomerId(), c.getUsername(), c.getRole()))
+            .collect(Collectors.toList());
         return ResponseEntity.ok(customers);
     }
 
@@ -38,8 +42,8 @@ public class CustomerController {
         // Wrap into a Customer object
         Customer customer = new Customer(username, password);
         Customer savedCustomer = customerService.addCustomer(customer);
-
-        return ResponseEntity.ok(savedCustomer);
+        CustomerDTO dto = new CustomerDTO(savedCustomer.getCustomerId(), savedCustomer.getUsername(), savedCustomer.getRole());
+        return ResponseEntity.ok(dto);
     }
 
     // Delete a customer by ID
@@ -52,7 +56,7 @@ public class CustomerController {
         return ResponseEntity.ok(Map.of("message", "Customer deleted successfully"));
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/by-username/{username}")
     public ResponseEntity<?> getCustomerByUsername(@PathVariable String username) {
         Optional<Customer> customerOpt = customerService.findByUsername(username);
         if (customerOpt.isPresent()) {

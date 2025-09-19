@@ -60,11 +60,7 @@ const buttonStyle = {
   transition: "background 0.3s",
 };
 
-const buttonHoverStyle = {
-  backgroundColor: "#0a2a70",
-};
-
-const titleStyle = {
+  const titleStyle = {
   textAlign: "center",
   color: "#082155",
   marginBottom: "20px",

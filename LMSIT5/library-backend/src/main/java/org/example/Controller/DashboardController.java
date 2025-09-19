@@ -25,12 +25,32 @@ public class DashboardController {
     private NotificationService notificationService;
 
     @GetMapping
-    public Map<String, Long> getDashboardStats() {
-        Map<String, Long> stats = new HashMap<>();
-        stats.put("books", (long) bookService.getAllBooks().size());
-        stats.put("customers", (long) customerService.getAllCustomers().size());
-        stats.put("librarians", (long) librarianService.getAllLibrarians().size());
-        stats.put("notifications", notificationService.getNotificationCount());
+    public Map<String, Object> getDashboardStats() {
+        Map<String, Object> stats = new HashMap<>();
+        try {
+            stats.put("books", (long) bookService.getAllBooks().size());
+        } catch (Exception e) {
+            stats.put("books", -1L);
+            stats.put("booksError", e.getMessage());
+        }
+        try {
+            stats.put("customers", (long) customerService.getAllCustomers().size());
+        } catch (Exception e) {
+            stats.put("customers", -1L);
+            stats.put("customersError", e.getMessage());
+        }
+        try {
+            stats.put("librarians", (long) librarianService.getAllLibrarians().size());
+        } catch (Exception e) {
+            stats.put("librarians", -1L);
+            stats.put("librariansError", e.getMessage());
+        }
+        try {
+            stats.put("notifications", notificationService.getNotificationCount());
+        } catch (Exception e) {
+            stats.put("notifications", -1L);
+            stats.put("notificationsError", e.getMessage());
+        }
         return stats;
     }
 }

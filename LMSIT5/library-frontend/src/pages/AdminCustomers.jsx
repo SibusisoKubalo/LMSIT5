@@ -9,7 +9,7 @@ export default function AdminCustomers() {
   // Fetch all customers
   const fetchCustomers = () => {
     setLoading(true);
-    api.get("/customers")
+    api.get("/api/customers")
       .then(res => {
         setCustomers(res.data);
       })
@@ -29,7 +29,7 @@ export default function AdminCustomers() {
     e.preventDefault();
     if (!newCustomer.username || !newCustomer.password) return;
 
-    api.post("/customers/register", { ...newCustomer, role: "CUSTOMER" })
+    api.post("/api/customers/register", { ...newCustomer, role: "CUSTOMER" })
       .then(() => {
         alert("Customer added successfully!");
         setNewCustomer({ username: "", password: "" });
@@ -45,7 +45,7 @@ export default function AdminCustomers() {
   const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this customer?")) return;
 
-    api.delete(`/customers/${id}`)
+    api.delete(`/api/customers/${id}`)
       .then(() => fetchCustomers())
       .catch(err => {
         console.error("Failed to delete customer", err);

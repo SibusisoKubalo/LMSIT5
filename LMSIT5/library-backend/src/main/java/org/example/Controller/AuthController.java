@@ -80,4 +80,33 @@ public class AuthController {
                 "role", user.getRole()
         ));
     }
+
+    // SIGNUP
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@RequestBody Map<String, String> body, HttpServletRequest request) {
+        String username = body.get("username");
+        String password = body.get("password");
+        String role = body.getOrDefault("role", "CUSTOMER"); // Default to CUSTOMER if not provided
+
+        try {
+            User user = userRepository.findByUsername(username).orElse(null);
+            if (user != null) {
+                return ResponseEntity.status(409).body("Username already exists");
+            }
+            // Use UserService to create user
+            User newUser = new User(username, passwordEncoder.encode(password), role);
+            userRepository.save(newUser);
+
+            // Auto-login: create session
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user", newUser);
+
+            return ResponseEntity.ok(Map.of(
+                "username", newUser.getUsername(),
+                "role", newUser.getRole()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Signup failed: " + e.getMessage());
+        }
+    }
 }
