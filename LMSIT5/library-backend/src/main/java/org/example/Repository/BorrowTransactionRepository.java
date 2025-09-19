@@ -8,4 +8,3 @@ public interface BorrowTransactionRepository extends JpaRepository<BorrowTransac
     List<BorrowTransaction> findByCustomer_CustomerId(int customerId);
     List<BorrowTransaction> findByBook_BookId(int bookId);
 }
-

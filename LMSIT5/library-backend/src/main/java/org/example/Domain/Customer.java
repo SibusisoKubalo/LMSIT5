@@ -1,85 +1,79 @@
 package org.example.Domain;
 
-// Mika'il Vallie 230259200
-// Log:CustomerUpdate
-//    :AddBuilderCustomer
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.OneToMany;
-import java.util.List;
+import jakarta.persistence.*;
+
+import java.util.Objects;
 
 @Entity
+@Table(name = "customers")
 public class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int customerId;
+
+    @Column(unique = true, nullable = false)
     private String username;
+
+    @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "customer")
-    private List<BorrowTransaction> borrowHistory;
-    @OneToMany(mappedBy = "customer")
-    private List<Reservation> reservations;
+    @Column(nullable = false)
+    private String role = "CUSTOMER";
 
-    private Customer() {}
+    // Constructors
+    public Customer() {}
 
-    public Customer(Builder builder) {
-        this.customerId = builder.customerId;
-        this.username = builder.username;
-        this.password = builder.password;
+    public Customer(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.role = "CUSTOMER"; // default role
     }
 
-    // Getters and setters for JPA
-    public int getCustomerId() { return customerId; }
-    public void setCustomerId(int customerId) { this.customerId = customerId; }
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-    public List<BorrowTransaction> getBorrowHistory() { return borrowHistory; }
-    public void setBorrowHistory(List<BorrowTransaction> borrowHistory) { this.borrowHistory = borrowHistory; }
-    public List<Reservation> getReservations() { return reservations; }
-    public void setReservations(List<Reservation> reservations) { this.reservations = reservations; }
+    // Getters & Setters
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    // Optional: equals & hashcode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer)) return false;
+        Customer customer = (Customer) o;
+        return customerId == customer.customerId;
+    }
 
     @Override
-    public String toString() {
-        return "Customer{" +
-                "customerId=" + customerId +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", borrowHistory=" + (borrowHistory != null ? borrowHistory.size() : 0) +
-                ", reservations=" + (reservations != null ? reservations.size() : 0) +
-                '}';
-    }
-
-    public static class Builder {
-        private int customerId;
-        private String username;
-        private String password;
-
-        public Builder customerId(int customerId) {
-            this.customerId = customerId;
-            return this;
-        }
-
-        public Builder username(String username) {
-            this.username = username;
-            return this;
-        }
-
-        public Builder password(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public Customer build() {
-            return new Customer(this);
-        }
-    }
-
-    public boolean login(String username, String password) {
-        return this.username.equals(username) && this.password.equals(password);
+    public int hashCode() {
+        return Objects.hash(customerId);
     }
 }

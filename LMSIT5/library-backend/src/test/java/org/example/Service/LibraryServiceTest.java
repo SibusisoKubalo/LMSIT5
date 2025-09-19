@@ -1,10 +1,4 @@
 package org.example.Service;
-/**
- * LibraryServiceTest.java
- *
- * @author Sibusiso Kubalo
- * Student Num: 218316038
- */
 
 import org.example.Domain.Library;
 import org.example.Factory.LibraryFactory;
@@ -14,12 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Optional;
-import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class LibraryServiceTest {
+
     private LibraryRepository repository;
     private LibraryService service;
 
@@ -31,7 +26,7 @@ public class LibraryServiceTest {
 
     @Test
     public void testCreateLibrary() {
-        Library library = LibraryFactory.createLibrary(1, "CPUT Library", "admin", "password123", 100, "admin@library.com");
+        Library library = LibraryFactory.createLibrary("CPUT Library", "admin", "password123", 100, "admin@library.com");
         when(repository.save(library)).thenReturn(library);
 
         Library created = service.createLibrary(library);
@@ -41,20 +36,20 @@ public class LibraryServiceTest {
 
     @Test
     public void testGetLibraryById() {
-        Library library = LibraryFactory.createLibrary(1, "CPUT Library", "admin", "password123", 100, "admin@library.com");
+        Library library = LibraryFactory.createLibrary("CPUT Library", "admin", "password123", 100, "admin@library.com");
         when(repository.findById(1)).thenReturn(Optional.of(library));
 
         Library found = service.getLibraryById(1);
         assertNotNull(found);
-        assertEquals(1, found.getId());
+        assertEquals("CPUT Library", found.getName());
     }
 
     @Test
     public void testUpdateLibrary() {
-        Library updatedLibrary = new Library(1, "Updated Library", "admin", "password123", 100, "admin@library.com");
-        when(repository.save(updatedLibrary)).thenReturn(updatedLibrary);
+        Library library = LibraryFactory.createLibrary("Updated Library", "admin", "password123", 100, "admin@library.com");
+        when(repository.save(library)).thenReturn(library);
 
-        Library updated = service.updateLibrary(updatedLibrary);
+        Library updated = service.updateLibrary(library);
         assertNotNull(updated);
         assertEquals("Updated Library", updated.getName());
     }
@@ -66,5 +61,25 @@ public class LibraryServiceTest {
         boolean deleted = service.deleteLibrary(1);
         assertTrue(deleted);
         verify(repository).deleteById(1);
+    }
+
+    @Test
+    public void testGetAllLibraries() {
+        List<Library> libraries = List.of(
+                LibraryFactory.createLibrary("Lib1", "user1", "pass1", 111, "a@b.com"),
+                LibraryFactory.createLibrary("Lib2", "user2", "pass2", 222, "c@d.com")
+        );
+
+        when(repository.findAll()).thenReturn(libraries);
+
+        List<Library> result = service.getAllLibraries();
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    public void testGetLibraryCount() {
+        when(repository.count()).thenReturn(5L);
+        long count = service.getLibraryCount();
+        assertEquals(5, count);
     }
 }

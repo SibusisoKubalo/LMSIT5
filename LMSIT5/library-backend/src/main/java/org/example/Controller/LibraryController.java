@@ -5,12 +5,14 @@ import org.example.Service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/library")
 @CrossOrigin(origins = "http://localhost:5173")
 public class LibraryController {
+
     @Autowired
     private LibraryService libraryService;
 
@@ -20,7 +22,7 @@ public class LibraryController {
     }
 
     @PostMapping
-    public Library createLibrary(@RequestBody Library library) {
+    public Library createLibrary(@Valid @RequestBody Library library) {
         return libraryService.createLibrary(library);
     }
 
@@ -30,7 +32,7 @@ public class LibraryController {
     }
 
     @PutMapping
-    public Library updateLibrary(@RequestBody Library library) {
+    public Library updateLibrary(@Valid @RequestBody Library library) {
         return libraryService.updateLibrary(library);
     }
 
