@@ -1,10 +1,4 @@
 package org.example.Service;
-/**
- * LibraryService.java
- *
- * @author Sibusiso Kubalo
- * Student Num: 218316038
- */
 
 import org.example.Domain.Library;
 import org.example.Repository.LibraryRepository;
@@ -15,6 +9,7 @@ import java.util.List;
 
 @Service
 public class LibraryService {
+
     private final LibraryRepository repository;
 
     @Autowired
@@ -50,3 +45,4 @@ public class LibraryService {
         return repository.count();
     }
 }
+

@@ -1,28 +1,18 @@
 package org.example.Factory;
 
-
 import org.example.Domain.Customer;
-
-//Mika'il Vallie 230259200
-// Log:BookFactory
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class CustomerFactory {
 
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
     public static Customer createCustomer(String username, String password) {
-        return new Customer.Builder()
-                .username(username)
-                .password(password)
-                .build();
+        String hashedPassword = encoder.encode(password); // Hash the password
+        Customer customer = new Customer(username, hashedPassword);
+        // If needed, set role manually
+        customer.setRole("CUSTOMER");
+        return customer;
     }
 
-
-    public static Customer createCustomerWithUsername(String username) {
-        return new Customer.Builder()
-                .username(username)
-                .build();
-    }
-
-    public static Customer createEmptyCustomer() {
-        return new Customer.Builder().build();
-    }
 }

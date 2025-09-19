@@ -1,19 +1,12 @@
 import { Link } from "react-router-dom";
 
-export default function AdminDashboard() {
-  const cards = [
-    { to: "/adminbooks", title: "📚 Books", desc: "Manage and organize the library’s books." },
-    { to: "/admincustomers", title: "👤 Customers", desc: "View, add, and manage customer accounts." },
-    { to: "/adminlibrary", title: "🏛 Libraries", desc: "Oversee library branches and librarians." },
-    { to: "/adminnotifications", title: "🔔 Notifications", desc: "Send updates and alerts to users." },
-  ];
-
+export default function DefaultDashboard() {
   return (
     <div style={{ padding: "30px", fontFamily: "Arial, sans-serif", color: "#082155" }}>
       <header style={{ marginBottom: "30px" }}>
-        <h1 style={{ fontSize: "2rem", marginBottom: "10px" }}>👨‍💼 Admin Dashboard</h1>
+        <h1 style={{ fontSize: "2rem", marginBottom: "10px" }}>📚 Welcome to the Library System</h1>
         <p style={{ fontSize: "1rem" }}>
-          Welcome back, Admin! 🚀 Manage everything in one place.
+          Explore our collection, borrow books, and stay updated with notifications.
         </p>
       </header>
 
@@ -24,10 +17,14 @@ export default function AdminDashboard() {
           gap: "20px",
         }}
       >
-        {cards.map((card) => (
+        {[
+          { title: "📖 Browse Books", desc: "See what’s available in our library.", link: "/books" },
+          { title: "👤 Sign Up", desc: "Create an account to borrow books and track your activity.", link: "/signup" },
+          { title: "🔐 Login", desc: "Already have an account? Log in to continue.", link: "/login" },
+        ].map((card) => (
           <Link
-            key={card.to}
-            to={card.to}
+            key={card.title}
+            to={card.link}
             style={{
               textDecoration: "none",
               color: "#082155",
@@ -44,7 +41,7 @@ export default function AdminDashboard() {
             onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
           >
             <h2 style={{ marginBottom: "10px" }}>{card.title}</h2>
-            <p style={{ flex: "1" }}>{card.desc}</p>
+            <p>{card.desc}</p>
             <button
               style={{
                 marginTop: "10px",
@@ -55,10 +52,9 @@ export default function AdminDashboard() {
                 borderRadius: "8px",
                 cursor: "pointer",
                 fontWeight: "bold",
-                alignSelf: "flex-start",
               }}
             >
-              Open
+              Go
             </button>
           </Link>
         ))}

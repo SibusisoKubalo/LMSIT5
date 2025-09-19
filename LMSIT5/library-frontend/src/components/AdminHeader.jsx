@@ -1,26 +1,19 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function AdminHeader({ }) {
-    const navigate = useNavigate();
-
-  const logout = () => {
-    // TODO: clear authentication state here
-    console.log("Logout clicked");
-
-    // Redirect to normal dashboard
-    navigate("/"); 
-  };
-
+export default function AdminHeader({ user, logout }) {
   return (
     <header className="header admin-header">
-      <h1>👨‍💼 Admin Panel</h1>
+      <h1>👨‍💼 Admin Panel {user.username}</h1>
       <nav>
-        <Link to="/admin">Admin Home</Link>
+        <Link to="/admin">Dashboard</Link>
         <Link to="/adminbooks">Manage Books</Link>
         <Link to="/admincustomers">Manage Users</Link>
         <Link to="/adminlibrary">Manage Libraries</Link>
-        <button onClick={logout}>Logout</button>
+        <Link to="/adminnotifications">Manage Notifications</Link>
       </nav>
+      <div className="user-info">
+        <button onClick={logout}>Logout</button>
+      </div>
     </header>
   );
 }

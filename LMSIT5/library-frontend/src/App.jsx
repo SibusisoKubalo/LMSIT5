@@ -1,9 +1,10 @@
-
+import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
+import DefaultDashboard from "./pages/DefaultDashboard";
 import Dashboard from "./pages/Dashboard";
 import Books from "./pages/Books";
 import Notifications from "./pages/Notifications";
@@ -15,34 +16,45 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminCustomers from "./pages/AdminCustomers";
 import AdminLibrary from "./pages/AdminLibrary";
 import AdminBooks from "./pages/AdminBooks";
-
-import "./App.css";
+import AdminNotifications from "./pages/AdminNotifications";
 
 export default function App() {
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+
   return (
     <Router>
       <div className="app-container">
-        <Header />
+        <Header user={user} setUser={setUser} />
         <div className="main-layout">
           <main className="page-content">
             <Routes>
-              {/* User pages */}
-              <Route path="/" element={<Dashboard />} />
+              {/* Default / unsigned users */}
+              <Route path="/" element={<DefaultDashboard />} />
+              <Route path="/defaultdashboard" element={<DefaultDashboard />} />
+
+              {/* Customer pages */}
+              <Route path="/dashboard" element={user?.role === "CUSTOMER" ? <Dashboard /> : <DefaultDashboard />} />
               <Route path="/books" element={<Books />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/library" element={<Library />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" element={<Login setUser={setUser} />} />
               <Route path="/signup" element={<Signup />} />
 
               {/* Admin pages */}
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/adminbooks" element={<AdminBooks />} />
-              <Route path="/admincustomers" element={<AdminCustomers />} />
-              <Route path="/adminlibrary" element={<AdminLibrary />} />
+              <Route path="/admin" element={user?.role === "LIBRARIAN" ? <AdminDashboard /> : <DefaultDashboard />} />
+              <Route path="/adminbooks" element={user?.role === "LIBRARIAN" ? <AdminBooks /> : <DefaultDashboard />} />
+              <Route path="/admincustomers" element={user?.role === "LIBRARIAN" ? <AdminCustomers /> : <DefaultDashboard />} />
+              <Route path="/adminlibrary" element={user?.role === "LIBRARIAN" ? <AdminLibrary /> : <DefaultDashboard />} />
+              <Route path="/adminnotifications" element={user?.role === "LIBRARIAN" ? <AdminNotifications /> : <DefaultDashboard />} />
+
+              {/* Catch-all for unknown paths */}
+              <Route path="*" element={<DefaultDashboard />} />
             </Routes>
           </main>
         </div>
-        <Footer />
       </div>
     </Router>
   );

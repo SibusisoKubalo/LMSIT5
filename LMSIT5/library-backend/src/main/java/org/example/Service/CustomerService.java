@@ -6,37 +6,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class CustomerService {
+
     @Autowired
     private CustomerRepository customerRepository;
 
-    public boolean registerCustomer(Customer customer) {
-        return customerRepository.save(customer) != null;
+    // Get all customers
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
     }
 
-    public Customer findCustomer(int customerId) {
-        Optional<Customer> customer = customerRepository.findById(customerId);
-        return customer.orElse(null);
+    // Find by username
+    public Optional<Customer> findByUsername(String username) {
+        return customerRepository.findByUsername(username);
     }
 
-    public boolean deleteCustomer(int customerId) {
-        if (customerRepository.existsById(customerId)) {
-            customerRepository.deleteById(customerId);
+    // Add customer
+    public Customer addCustomer(Customer customer) {
+        return customerRepository.save(customer);
+    }
+
+    // Delete customer by ID
+    public boolean deleteCustomer(int id) {
+        if (customerRepository.existsById(id)) {
+            customerRepository.deleteById(id);
             return true;
         }
         return false;
-    }
-
-    // ===== Dashboard statistics =====
-    public long getCustomerCount() {
-        return customerRepository.count();
-    }
-
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
     }
 }

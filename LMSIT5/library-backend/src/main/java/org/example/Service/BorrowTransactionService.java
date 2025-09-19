@@ -5,6 +5,7 @@ import org.example.Domain.Book;
 import org.example.Domain.Customer;
 import org.example.Repository.BorrowTransactionRepository;
 import org.example.Repository.BookRepository;
+import org.example.Repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,8 @@ public class BorrowTransactionService {
     private BorrowTransactionRepository borrowTransactionRepository;
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     public BorrowTransaction borrowBook(Customer customer, Book book, int days) {
         if (book.getAvailableCopies() <= 0) {
@@ -58,5 +61,12 @@ public class BorrowTransactionService {
     public List<BorrowTransaction> getAllTransactions() {
         return borrowTransactionRepository.findAll();
     }
+    public List<BorrowTransaction> getTransactionsByCustomerUsername(String username) {
+        Optional<Customer> customerOpt = customerRepository.findByUsername(username);
+        if (customerOpt.isEmpty()) return List.of(); // empty list if user not found
+        Customer customer = customerOpt.get();
+        return borrowTransactionRepository.findByCustomer_CustomerId(customer.getCustomerId());
+    }
+
 }
 

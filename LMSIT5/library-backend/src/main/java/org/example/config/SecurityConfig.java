@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,8 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -39,13 +43,23 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/", "/api/auth/**").permitAll() // public pages and auth
-                .requestMatchers("/api/books/add", "/api/books/delete/**").hasAuthority("LIBRARIAN") // admin only
-                .requestMatchers("/api/books/borrow/**").hasAuthority("CUSTOMER") // customer only
-                .anyRequest().authenticated()
-                .and()
-                .formLogin().disable();
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/login", "/api/auth/me").permitAll()
+                        .requestMatchers("/api/books/add", "/api/books/delete/**").hasRole("LIBRARIAN")
+                        .requestMatchers("/api/books/**").hasAnyRole("LIBRARIAN", "CUSTOMER")
+                        .requestMatchers("/api/books/borrow/**", "/api/books/return/**", "/api/books/borrowed").hasRole("CUSTOMER")
+                        .requestMatchers("/api/books/add", "/api/books/delete/**").hasRole("LIBRARIAN")
+                        .requestMatchers("/api/auth/logout").authenticated()
+                        .anyRequest().permitAll()
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                )
+                .formLogin().disable()
+                .httpBasic(withDefaults());
+
+
         return http.build();
     }
 }
+
