@@ -32,34 +32,27 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder())
-                .and()
-                .build();
+        AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        return builder.build();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login", "/api/auth/me").permitAll()
-                        .requestMatchers("/api/books/add", "/api/books/delete/**").hasRole("LIBRARIAN")
-                        .requestMatchers("/api/books/**").hasAnyRole("LIBRARIAN", "CUSTOMER")
-                        .requestMatchers("/api/books/borrow/**", "/api/books/return/**", "/api/books/borrowed").hasRole("CUSTOMER")
-                        .requestMatchers("/api/books/add", "/api/books/delete/**").hasRole("LIBRARIAN")
-                        .requestMatchers("/api/auth/logout").authenticated()
-                        .anyRequest().permitAll()
-                )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                )
-                .formLogin().disable()
-                .httpBasic(withDefaults());
-
-
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/login", "/api/auth/me").permitAll()
+                .requestMatchers("/api/books/add", "/api/books/delete/**").hasRole("LIBRARIAN")
+                .requestMatchers("/api/books/**").hasAnyRole("LIBRARIAN", "CUSTOMER")
+                .requestMatchers("/api/books/borrow/**", "/api/books/return/**", "/api/books/borrowed").hasRole("CUSTOMER")
+                .requestMatchers("/api/auth/logout").authenticated()
+                .requestMatchers("/api/cart/**").authenticated()
+                .anyRequest().permitAll()
+            )
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+            .formLogin(form -> form.disable())
+            .httpBasic(withDefaults());
         return http.build();
     }
 }
-

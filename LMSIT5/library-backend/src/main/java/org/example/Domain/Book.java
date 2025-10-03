@@ -25,21 +25,25 @@ public class Book {
     private String location;
     private String status; // e.g., AVAILABLE, ON_LOAN, RESERVED, DAMAGED
 
-    private Book() {}
+    private String imageUrl; // URL to book image
+    private String pdfUrl;   // URL to book PDF
+    private double price;    // Book price
+
+    public Book() {}
 
     private Book(Builder builder) {
         this.title = builder.title;
         this.bookId = builder.bookId;
         this.subject = builder.subject;
         this.author = builder.author;
-
         this.genre = builder.genre;
-
         this.totalCopies = builder.totalCopies;
         this.availableCopies = builder.availableCopies;
         this.location = builder.location;
         this.status = builder.status;
-
+        this.imageUrl = builder.imageUrl;
+        this.pdfUrl = builder.pdfUrl;
+        this.price = builder.price;
     }
 
 
@@ -65,6 +69,13 @@ public class Book {
 
     public String getGenre() { return genre; }   // <-- GETTER
     public void setGenre(String genre) { this.genre = genre; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public String getPdfUrl() { return pdfUrl; }
+    public void setPdfUrl(String pdfUrl) { this.pdfUrl = pdfUrl; }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
 
     @Override
     public String toString() {
@@ -92,6 +103,9 @@ public class Book {
         private int availableCopies;
         private String location;
         private String status;
+        private String imageUrl;
+        private String pdfUrl;
+        private double price;
 
         public Builder title(String title) {
             this.title = title;
@@ -132,6 +146,18 @@ public class Book {
         }
         public Builder status(String status) {
             this.status = status;
+            return this;
+        }
+        public Builder imageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+        public Builder pdfUrl(String pdfUrl) {
+            this.pdfUrl = pdfUrl;
+            return this;
+        }
+        public Builder price(double price) {
+            this.price = price;
             return this;
         }
 

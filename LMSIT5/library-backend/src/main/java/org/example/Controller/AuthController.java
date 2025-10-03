@@ -27,10 +27,10 @@ public class AuthController {
     // LOGIN
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body, HttpServletRequest request) {
-        String username = body.get("username");
+        String email = body.get("email");
         String password = body.get("password");
 
-        Optional<User> optionalUser = userRepository.findByUsername(username);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isEmpty()) {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
@@ -46,7 +46,7 @@ public class AuthController {
         session.setAttribute("user", user);
 
         return ResponseEntity.ok(Map.of(
-                "username", user.getUsername(),
+                "email", user.getEmail(),
                 "role", user.getRole()
         ));
     }
@@ -76,7 +76,7 @@ public class AuthController {
         if (user == null) return ResponseEntity.ok().body(null);
 
         return ResponseEntity.ok(Map.of(
-                "username", user.getUsername(),
+                "email", user.getEmail(),
                 "role", user.getRole()
         ));
     }
@@ -84,17 +84,20 @@ public class AuthController {
     // SIGNUP
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody Map<String, String> body, HttpServletRequest request) {
-        String username = body.get("username");
+        String name = body.get("name");
+        String surname = body.get("surname");
+        String email = body.get("email");
         String password = body.get("password");
-        String role = body.getOrDefault("role", "CUSTOMER"); // Default to CUSTOMER if not provided
+        String role = body.getOrDefault("role", "CUSTOMER");
+        String staffNumber = body.get("staffNumber"); // only for librarian/admin
 
         try {
-            User user = userRepository.findByUsername(username).orElse(null);
+            User user = userRepository.findByEmail(email).orElse(null);
             if (user != null) {
-                return ResponseEntity.status(409).body("Username already exists");
+                return ResponseEntity.status(409).body("Email already exists");
             }
             // Use UserService to create user
-            User newUser = new User(username, passwordEncoder.encode(password), role);
+            User newUser = new User(name, surname, email, passwordEncoder.encode(password), role, staffNumber);
             userRepository.save(newUser);
 
             // Auto-login: create session
@@ -102,7 +105,7 @@ public class AuthController {
             session.setAttribute("user", newUser);
 
             return ResponseEntity.ok(Map.of(
-                "username", newUser.getUsername(),
+                "email", newUser.getEmail(),
                 "role", newUser.getRole()
             ));
         } catch (Exception e) {

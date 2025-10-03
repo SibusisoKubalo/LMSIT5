@@ -18,18 +18,17 @@ public class UserService {
     }
 
     // ✅ Signup
-    public User signup(String username, String password, String role) {
-        if (userRepository.findByUsername(username).isPresent()) {
-            throw new RuntimeException("Username already exists!");
+    public User signup(String email, String password, String role, String name, String surname, String staffNumber) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new RuntimeException("Email already exists!");
         }
-        User user = new User(username, passwordEncoder.encode(password), role);
+        User user = new User(name, surname, email, passwordEncoder.encode(password), role, staffNumber);
         return userRepository.save(user);
     }
 
-    // ✅ Find user by username
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
+    // ✅ Find user by email
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
-
