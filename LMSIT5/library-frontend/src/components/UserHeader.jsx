@@ -9,6 +9,7 @@ export default function UserHeader({ user, logout }) {
         <Link to="/books">Books</Link>
         <Link to="/library">Library</Link>
         <Link to="/notifications">Notifications</Link>
+        <Link to="/about">About</Link>
       </nav>
       <div className="user-info">
         <span>👋 Welcome {user.username}!</span>
@@ -17,4 +18,3 @@ export default function UserHeader({ user, logout }) {
     </header>
   );
 }
-
