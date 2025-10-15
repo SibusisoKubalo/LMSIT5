@@ -7,6 +7,7 @@ export default function DefaultHeader() {
       <nav>
         <Link to="/defaultdashboard">Home</Link>
         <Link to="/books">Books</Link>
+        <Link to="/about">About</Link>
       </nav>
       <div className="auth-buttons">
         <Link to="/login"><button>Login</button></Link>
