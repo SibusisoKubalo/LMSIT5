@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BorrowTransactionRepository extends JpaRepository<BorrowTransaction, Long> {
-    List<BorrowTransaction> findByCustomer_CustomerId(int customerId);
+    List<BorrowTransaction> findByUser_Id(Long userId);
     List<BorrowTransaction> findByBook_BookId(int bookId);
 }

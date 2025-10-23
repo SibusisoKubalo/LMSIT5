@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"; // ✅ import useNavigate
 import api from "../api";
 
 export default function Login({ setUser }) {
-  const [form, setForm] = useState({ username: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -26,7 +26,7 @@ export default function Login({ setUser }) {
       }
     } catch (err) {
       console.error("Login failed:", err.response?.data || err.message);
-      alert("Login failed: " + (err.response?.data || err.message));
+      alert("Login failed: " + (err.response?.data?.error || err.response?.data || err.message));
     }
   };
 
@@ -72,8 +72,8 @@ return (
   <div style={formStyle}>
     <h2 style={titleStyle}>Login</h2>
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-      <input name="username" placeholder="Username" onChange={handleChange} style={inputStyle} required />
-      <input type="password" name="password" placeholder="Password" onChange={handleChange} style={inputStyle} required />
+      <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} style={inputStyle} required />
+      <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} style={inputStyle} required />
       <button type="submit" style={buttonStyle}>Login</button>
     </form>
   </div>

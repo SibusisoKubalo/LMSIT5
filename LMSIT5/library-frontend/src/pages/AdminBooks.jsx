@@ -12,9 +12,15 @@ export default function AdminBooks() {
     totalCopies: "",
     availableCopies: "",
     location: "",
-    status: "AVAILABLE"
+    status: "AVAILABLE",
+    imageUrl: "",
+    pdfUrl: "",
+    price: "",
+    fineRate: ""
   });
   const [errors, setErrors] = useState({});
+  const [uploading, setUploading] = useState({ image: false, pdf: false });
+  const [previewImage, setPreviewImage] = useState("");
 
   // Fetch all books
   const fetchBooks = async () => {
@@ -43,6 +49,10 @@ export default function AdminBooks() {
       newErrors.totalCopies = "Total copies must be a positive number";
     if (!form.availableCopies || isNaN(form.availableCopies) || form.availableCopies < 0)
       newErrors.availableCopies = "Available copies must be 0 or more";
+    if (form.price && (isNaN(form.price) || form.price < 0))
+      newErrors.price = "Price must be a positive number";
+    if (form.fineRate && (isNaN(form.fineRate) || form.fineRate < 0))
+      newErrors.fineRate = "Fine rate must be a positive number";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -50,35 +60,82 @@ export default function AdminBooks() {
   // Handle form change
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  // Add new book
+  // Handle image upload
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Show preview
+    const reader = new FileReader();
+    reader.onload = (event) => setPreviewImage(event.target.result);
+    reader.readAsDataURL(file);
+
+    setUploading({ ...uploading, image: true });
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await api.post('/files/upload/image', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      setForm({ ...form, imageUrl: response.data.imageUrl });
+      alert('Book cover uploaded successfully!');
+    } catch (error) {
+      console.error('Image upload failed:', error);
+      alert('Failed to upload image: ' + (error.response?.data?.error || error.message));
+      setPreviewImage("");
+    } finally {
+      setUploading({ ...uploading, image: false });
+    }
+  };
+
+  // Handle PDF upload
+  const handlePdfUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploading({ ...uploading, pdf: true });
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await api.post('/files/upload/pdf', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      setForm({ ...form, pdfUrl: response.data.pdfUrl });
+      alert('Book PDF uploaded successfully!');
+    } catch (error) {
+      console.error('PDF upload failed:', error);
+      alert('Failed to upload PDF: ' + (error.response?.data?.error || error.message));
+    } finally {
+      setUploading({ ...uploading, pdf: false });
+    }
+  };
+
+  // Add book
   const handleAdd = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
-    // Prepare payload, no bookId
-    const payload = {
-      title: form.title,
-      author: form.author,
-      subject: form.subject,
-      genre: form.genre,
-      totalCopies: parseInt(form.totalCopies),
-      availableCopies: parseInt(form.availableCopies),
-      location: form.location,
-      status: form.status
-    };
-
     try {
-      await api.post("/books/add", payload);
-      setForm({
-        title: "",
-        author: "",
-        subject: "",
-        genre: "",
-        totalCopies: "",
-        availableCopies: "",
-        location: "",
-        status: "AVAILABLE"
+      await api.post("/books/add", {
+        ...form,
+        totalCopies: parseInt(form.totalCopies),
+        availableCopies: parseInt(form.availableCopies),
+        price: parseFloat(form.price) || 0,
+        fineRate: parseFloat(form.fineRate) || 5.0 // Default to R5 per day if not specified
       });
+      alert("Book added successfully!");
+      setForm({
+        title: "", author: "", subject: "", genre: "", totalCopies: "",
+        availableCopies: "", location: "", status: "AVAILABLE",
+        imageUrl: "", pdfUrl: "", price: "", fineRate: ""
+      });
+      setPreviewImage("");
       fetchBooks();
     } catch (err) {
       console.error("Failed to add book:", err.response?.data || err.message);
@@ -125,6 +182,8 @@ export default function AdminBooks() {
         { name: "totalCopies", placeholder: "Total Copies", type: "number" },
         { name: "availableCopies", placeholder: "Available Copies", type: "number" },
         { name: "location", placeholder: "Location" },
+        { name: "price", placeholder: "Price (R)", type: "number", step: "0.01" },
+        { name: "fineRate", placeholder: "Daily Fine Rate (R)", type: "number", step: "0.01" },
       ].map((field) => (
         <div key={field.name} style={{ display: "flex", flexDirection: "column" }}>
           <input
@@ -169,6 +228,37 @@ export default function AdminBooks() {
         <option value="RESERVED">RESERVED</option>
         <option value="DAMAGED">DAMAGED</option>
       </select>
+
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <label style={{ marginBottom: "5px", fontWeight: "bold" }}>Book Cover</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          style={{ padding: "10px", borderRadius: "8px", border: "1px solid #082155" }}
+        />
+        {uploading.image && <span style={{ color: "#4caf50" }}>Uploading image...</span>}
+        {previewImage && (
+          <div style={{ marginTop: "10px" }}>
+            <img
+              src={previewImage}
+              alt="Preview"
+              style={{ maxWidth: "100%", borderRadius: "8px", border: "1px solid #082155" }}
+            />
+          </div>
+        )}
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <label style={{ marginBottom: "5px", fontWeight: "bold" }}>Book PDF</label>
+        <input
+          type="file"
+          accept="application/pdf"
+          onChange={handlePdfUpload}
+          style={{ padding: "10px", borderRadius: "8px", border: "1px solid #082155" }}
+        />
+        {uploading.pdf && <span style={{ color: "#4caf50" }}>Uploading PDF...</span>}
+      </div>
 
       <button
         type="submit"

@@ -2,10 +2,10 @@ package org.example.Service;
 
 import org.example.Domain.BorrowTransaction;
 import org.example.Domain.Book;
-import org.example.Domain.Customer;
+import org.example.Domain.User;
 import org.example.Repository.BorrowTransactionRepository;
 import org.example.Repository.BookRepository;
-import org.example.Repository.CustomerRepository;
+import org.example.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +20,15 @@ public class BorrowTransactionService {
     @Autowired
     private BookRepository bookRepository;
     @Autowired
-    private CustomerRepository customerRepository;
+    private UserRepository userRepository;
 
-    public BorrowTransaction borrowBook(Customer customer, Book book, int days) {
+    public BorrowTransaction borrowBook(User user, Book book, int days) {
         if (book.getAvailableCopies() <= 0) {
             throw new RuntimeException("No available copies for this book.");
         }
         book.setAvailableCopies(book.getAvailableCopies() - 1);
         bookRepository.save(book);
-        BorrowTransaction transaction = new BorrowTransaction(customer, book, LocalDate.now(), LocalDate.now().plusDays(days));
+        BorrowTransaction transaction = new BorrowTransaction(user, book, LocalDate.now(), LocalDate.now().plusDays(days));
         return borrowTransactionRepository.save(transaction);
     }
 
@@ -50,8 +50,8 @@ public class BorrowTransactionService {
         return borrowTransactionRepository.save(transaction);
     }
 
-    public List<BorrowTransaction> getTransactionsByCustomer(int customerId) {
-        return borrowTransactionRepository.findByCustomer_CustomerId(customerId);
+    public List<BorrowTransaction> getTransactionsByUser(Long userId) {
+        return borrowTransactionRepository.findByUser_Id(userId);
     }
 
     public List<BorrowTransaction> getTransactionsByBook(int bookId) {
@@ -61,12 +61,11 @@ public class BorrowTransactionService {
     public List<BorrowTransaction> getAllTransactions() {
         return borrowTransactionRepository.findAll();
     }
-    public List<BorrowTransaction> getTransactionsByCustomerUsername(String username) {
-        Optional<Customer> customerOpt = customerRepository.findByUsername(username);
-        if (customerOpt.isEmpty()) return List.of(); // empty list if user not found
-        Customer customer = customerOpt.get();
-        return borrowTransactionRepository.findByCustomer_CustomerId(customer.getCustomerId());
+
+    public List<BorrowTransaction> getTransactionsByUsername(String username) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty()) return List.of(); // empty list if user not found
+        User user = userOpt.get();
+        return borrowTransactionRepository.findByUser_Id(user.getId());
     }
-
 }
-

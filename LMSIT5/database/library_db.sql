@@ -42,7 +42,7 @@ CREATE TABLE `books` (
   `total_copies` INT NOT NULL DEFAULT 1,
   `available_copies` INT NOT NULL DEFAULT 1,
   `location` varchar(255) NOT NULL ,
-  `status` ENUM('AVAILABLE','ON_LOAN','RESERVED','DAMAGED') DEFAULT 'AVAILABLE';
+  `status` ENUM('AVAILABLE','ON_LOAN') DEFAULT 'AVAILABLE';
 
 PRIMARY KEY (`bookId`)
 );
@@ -54,19 +54,7 @@ PRIMARY KEY (`bookId`)
 LOCK TABLES `books` WRITE;
 UNLOCK TABLES;
 
-INSERT INTO books (
-    bookId, title, subject, author, total_copies, available_copies, location, status
-) VALUES
-      (1, 'To Kill a Mockingbird', 'Fiction', 'Harper Lee', 5, 5, 'Shelf A1', 'AVAILABLE'),
-      (2, '1984', 'Dystopian', 'George Orwell', 4, 3, 'Shelf B2', 'ON_LOAN'),
-      (3, 'A Brief History of Time', 'Science', 'Stephen Hawking', 3, 3, 'Shelf C1', 'AVAILABLE'),
-      (4, 'The Great Gatsby', 'Classic', 'F. Scott Fitzgerald', 2, 1, 'Shelf D4', 'AVAILABLE'),
-      (5, 'The Catcher in the Rye', 'Fiction', 'J.D. Salinger', 6, 6, 'Shelf E2', 'AVAILABLE'),
-      (6, 'Clean Code', 'Programming', 'Robert C. Martin', 3, 3, 'Shelf F3', 'AVAILABLE'),
-      (7, 'The Art of War', 'Philosophy', 'Sun Tzu', 4, 2, 'Shelf G1', 'ON_LOAN'),
-      (8, 'Becoming', 'Biography', 'Michelle Obama', 5, 5, 'Shelf H2', 'AVAILABLE'),
-      (9, 'The Hobbit', 'Fantasy', 'J.R.R. Tolkien', 7, 7, 'Shelf I5', 'AVAILABLE'),
-      (10, 'Atomic Habits', 'Self-Help', 'James Clear', 5, 5, 'Shelf J3', 'AVAILABLE');
+
 
 -------------------------------------------------------------------------------------------------
 -- Table structure for table `customer`
@@ -255,19 +243,30 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `user`;
 
-CREATE TABLE `user` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `role` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+-- Updated users table to match Java User entity
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `surname` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL UNIQUE,
+  `password` VARCHAR(255) NOT NULL,
+  `role` VARCHAR(50) NOT NULL DEFAULT 'CUSTOMER',
+  `staff_number` VARCHAR(100) UNIQUE,
+  PRIMARY KEY (`id`),
+  INDEX `idx_email` (`email`),
+  INDEX `idx_staff_number` (`staff_number`)
 );
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `users`
 --
 
-LOCK TABLES `user` WRITE;
+LOCK TABLES `users` WRITE;
+-- Insert default admin user
+INSERT INTO `users` (`name`, `surname`, `email`, `password`, `role`, `staff_number`)
+VALUES ('Admin', 'User', 'admin@library.com', '$2a$10$dummy.hashed.password', 'LIBRARIAN', 'ADMIN001');
 UNLOCK TABLES;
 
 -------------------------------------------------------------------------------------------------

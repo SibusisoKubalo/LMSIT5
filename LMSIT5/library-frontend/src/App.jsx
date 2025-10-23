@@ -39,7 +39,7 @@ export default function App() {
 
               {/* Customer pages */}
               <Route path="/dashboard" element={user?.role === "CUSTOMER" ? <Dashboard /> : <DefaultDashboard />} />
-              <Route path="/books" element={<Books />} />
+              <Route path="/books" element={<Books username={user?.username} />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/library" element={<Library />} />
               <Route path="/login" element={<Login setUser={setUser} />} />

@@ -28,6 +28,7 @@ public class Book {
     private String imageUrl; // URL to book image
     private String pdfUrl;   // URL to book PDF
     private double price;    // Book price
+    private double fineRate; // Daily fine rate for this book
 
     public Book() {}
 
@@ -44,6 +45,7 @@ public class Book {
         this.imageUrl = builder.imageUrl;
         this.pdfUrl = builder.pdfUrl;
         this.price = builder.price;
+        this.fineRate = builder.fineRate;
     }
 
 
@@ -76,6 +78,8 @@ public class Book {
     public void setPdfUrl(String pdfUrl) { this.pdfUrl = pdfUrl; }
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
+    public double getFineRate() { return fineRate; }
+    public void setFineRate(double fineRate) { this.fineRate = fineRate; }
 
     @Override
     public String toString() {
@@ -106,6 +110,7 @@ public class Book {
         private String imageUrl;
         private String pdfUrl;
         private double price;
+        private double fineRate;
 
         public Builder title(String title) {
             this.title = title;
@@ -158,6 +163,10 @@ public class Book {
         }
         public Builder price(double price) {
             this.price = price;
+            return this;
+        }
+        public Builder fineRate(double fineRate) {
+            this.fineRate = fineRate;
             return this;
         }
 

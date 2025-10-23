@@ -4,20 +4,27 @@ import api from "../api"; // Axios instance
 export default function AdminCustomers() {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [newCustomer, setNewCustomer] = useState({ username: "", password: "" });
+  const [newCustomer, setNewCustomer] = useState({
+    username: "",
+    password: "",
+    email: "",
+    name: "",
+    surname: ""
+  });
 
   // Fetch all customers
   const fetchCustomers = () => {
     setLoading(true);
-    api.get("/api/customers")
+    api.get("/customers")
       .then(res => {
         setCustomers(res.data);
+        setLoading(false);
       })
-      .catch(err => {
-        console.error("Failed to load customers", err);
-        alert("Failed to load customers");
-      })
-      .finally(() => setLoading(false));
+      .catch(_err => {
+        console.error("Failed to load customers", _err);
+        alert("Failed to load customers: " + (_err.response?.data?.error || _err.message));
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -27,12 +34,15 @@ export default function AdminCustomers() {
   // Add customer
   const handleAdd = (e) => {
     e.preventDefault();
-    if (!newCustomer.username || !newCustomer.password) return;
+    if (!newCustomer.username || !newCustomer.password) {
+      alert("Username and password are required");
+      return;
+    }
 
-    api.post("/api/customers/register", { ...newCustomer, role: "CUSTOMER" })
+    api.post("/customers/register", newCustomer)
       .then(() => {
         alert("Customer added successfully!");
-        setNewCustomer({ username: "", password: "" });
+        setNewCustomer({ username: "", password: "", email: "", name: "", surname: "" });
         fetchCustomers();
       })
       .catch(err => {
@@ -45,7 +55,7 @@ export default function AdminCustomers() {
   const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this customer?")) return;
 
-    api.delete(`/api/customers/${id}`)
+    api.delete(`/customers/${id}`)
       .then(() => fetchCustomers())
       .catch(err => {
         console.error("Failed to delete customer", err);
@@ -63,22 +73,46 @@ export default function AdminCustomers() {
       </header>
 
       {/* Add Customer Form */}
-      <form onSubmit={handleAdd} style={{ marginBottom: "30px", display: "flex", gap: "15px", backgroundColor: "#f0f4ff", padding: "20px", borderRadius: "12px", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={newCustomer.username}
-          onChange={(e) => setNewCustomer({ ...newCustomer, username: e.target.value })}
-          required
-          style={{ padding: "10px", borderRadius: "8px", border: "1px solid #082155", flex: 1 }}
-        />
+      <form onSubmit={handleAdd} style={{ marginBottom: "30px", display: "flex", flexDirection: "column", gap: "15px", backgroundColor: "#f0f4ff", padding: "20px", borderRadius: "12px", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
+        <h3>Add New Customer</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" }}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={newCustomer.username}
+            onChange={(e) => setNewCustomer({ ...newCustomer, username: e.target.value })}
+            required
+            style={{ padding: "10px", borderRadius: "8px", border: "1px solid #082155" }}
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={newCustomer.email}
+            onChange={(e) => setNewCustomer({ ...newCustomer, email: e.target.value })}
+            style={{ padding: "10px", borderRadius: "8px", border: "1px solid #082155" }}
+          />
+          <input
+            type="text"
+            placeholder="First Name"
+            value={newCustomer.name}
+            onChange={(e) => setNewCustomer({ ...newCustomer, name: e.target.value })}
+            style={{ padding: "10px", borderRadius: "8px", border: "1px solid #082155" }}
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={newCustomer.surname}
+            onChange={(e) => setNewCustomer({ ...newCustomer, surname: e.target.value })}
+            style={{ padding: "10px", borderRadius: "8px", border: "1px solid #082155" }}
+          />
+        </div>
         <input
           type="password"
           placeholder="Password"
           value={newCustomer.password}
           onChange={(e) => setNewCustomer({ ...newCustomer, password: e.target.value })}
           required
-          style={{ padding: "10px", borderRadius: "8px", border: "1px solid #082155", flex: 1 }}
+          style={{ padding: "10px", borderRadius: "8px", border: "1px solid #082155" }}
         />
         <button type="submit" style={{ padding: "10px 15px", backgroundColor: "#082155", color: "#fff", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: "bold" }}>
           ➕ Add Customer
@@ -94,7 +128,9 @@ export default function AdminCustomers() {
             <tr>
               <th style={{ padding: "12px", textAlign: "left" }}>ID</th>
               <th style={{ padding: "12px", textAlign: "left" }}>Username</th>
-              <th style={{ padding: "12px", textAlign: "left" }}>Password</th>
+              <th style={{ padding: "12px", textAlign: "left" }}>Name</th>
+              <th style={{ padding: "12px", textAlign: "left" }}>Email</th>
+              <th style={{ padding: "12px", textAlign: "left" }}>Role</th>
               <th style={{ padding: "12px", textAlign: "left" }}>Actions</th>
             </tr>
           </thead>
@@ -103,9 +139,14 @@ export default function AdminCustomers() {
               <tr key={c.customerId} style={{ backgroundColor: i % 2 === 0 ? "#fff" : "#f9f9f9" }}>
                 <td style={{ padding: "10px" }}>{c.customerId}</td>
                 <td style={{ padding: "10px" }}>{c.username}</td>
-                <td style={{ padding: "10px" }}>******</td>
+                <td style={{ padding: "10px" }}>{c.name} {c.surname}</td>
+                <td style={{ padding: "10px" }}>{c.email}</td>
+                <td style={{ padding: "10px" }}>{c.role}</td>
                 <td style={{ padding: "10px" }}>
-                  <button onClick={() => handleDelete(c.customerId)} style={{ backgroundColor: "#f44336", color: "#fff", border: "none", padding: "6px 12px", borderRadius: "6px", cursor: "pointer" }}>
+                  <button
+                    onClick={() => handleDelete(c.customerId)}
+                    style={{ backgroundColor: "#f44336", color: "#fff", border: "none", padding: "6px 12px", borderRadius: "6px", cursor: "pointer" }}
+                  >
                     ❌ Delete
                   </button>
                 </td>

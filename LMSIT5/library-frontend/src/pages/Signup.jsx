@@ -3,7 +3,13 @@ import { useNavigate } from "react-router-dom";
 import api from "../api";
 
 export default function Signup() {
-  const [form, setForm] = useState({ username: "", password: "", role: "CUSTOMER" });
+  const [form, setForm] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    password: "",
+    role: "CUSTOMER"
+  });
   const navigate = useNavigate();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -13,10 +19,11 @@ export default function Signup() {
     try {
       const res = await api.post("/auth/signup", form);
       console.log(res.data); // should log "User registered successfully"
+      alert("Signup successful! Please login.");
       navigate("/login");
     } catch (err) {
       console.error("Signup failed:", err.response?.data || err.message);
-      alert("Signup failed: " + (err.response?.data || err.message));
+      alert("Signup failed: " + (err.response?.data?.error || err.response?.data || err.message));
     }
   };
 
@@ -66,8 +73,10 @@ return (
   <div style={formStyle}>
     <h2 style={titleStyle}>Sign Up</h2>
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-      <input name="username" placeholder="Username" onChange={handleChange} style={inputStyle} required />
-      <input type="password" name="password" placeholder="Password" onChange={handleChange} style={inputStyle} required />
+      <input name="name" placeholder="First Name" value={form.name} onChange={handleChange} style={inputStyle} required />
+      <input name="surname" placeholder="Last Name" value={form.surname} onChange={handleChange} style={inputStyle} required />
+      <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} style={inputStyle} required />
+      <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} style={inputStyle} required />
       <select name="role" value={form.role} onChange={handleChange} style={inputStyle}>
         <option value="CUSTOMER">Customer</option>
         <option value="LIBRARIAN">Librarian</option>

@@ -5,7 +5,6 @@ import org.example.Repository.CartRepository;
 import org.example.Repository.BookRepository;
 import org.example.Repository.UserRepository;
 import org.example.Repository.BorrowTransactionRepository;
-import org.example.Repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +22,6 @@ public class CartService {
     private UserRepository userRepository;
     @Autowired
     private BorrowTransactionRepository borrowTransactionRepository;
-    @Autowired
-    private CustomerRepository customerRepository;
 
     public Cart getOrCreateCart(User user) {
         Optional<Cart> cartOpt = cartRepository.findByUser(user);
@@ -64,18 +61,19 @@ public class CartService {
     public void checkoutCart(User user, int days) {
         Cart cart = getOrCreateCart(user);
         if (cart.isCheckedOut()) throw new RuntimeException("Cart already checked out");
-        // Map User to Customer using email
-        Customer customer = customerRepository.findByUsername(user.getEmail())
-            .orElseThrow(() -> new RuntimeException("Customer not found for user email: " + user.getEmail()));
+
+        // Use User directly instead of mapping to Customer
         for (Book book : cart.getItems()) {
             if (book.getAvailableCopies() <= 0) throw new RuntimeException("No available copies for " + book.getTitle());
             book.setAvailableCopies(book.getAvailableCopies() - 1);
             bookRepository.save(book);
+
+            // Create BorrowTransaction with User instead of Customer
             BorrowTransaction transaction = new BorrowTransaction(
-                customer,
+                user,
                 book,
-                java.time.LocalDate.now(),
-                java.time.LocalDate.now().plusDays(days)
+                LocalDate.now(),
+                LocalDate.now().plusDays(days)
             );
             borrowTransactionRepository.save(transaction);
         }

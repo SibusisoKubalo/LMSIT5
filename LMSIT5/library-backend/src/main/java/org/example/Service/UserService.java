@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -22,7 +24,19 @@ public class UserService {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("Email already exists!");
         }
-        User user = new User(name, surname, email, passwordEncoder.encode(password), role, staffNumber);
+
+        // Generate username from email (part before @)
+        String username = email.split("@")[0];
+
+        // Check if username already exists, if so, append a number
+        int counter = 1;
+        String originalUsername = username;
+        while (userRepository.findByUsername(username).isPresent()) {
+            username = originalUsername + counter;
+            counter++;
+        }
+
+        User user = new User(name, surname, username, email, passwordEncoder.encode(password), role, staffNumber);
         return userRepository.save(user);
     }
 
@@ -30,5 +44,25 @@ public class UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    // ✅ Find user by username
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    // ✅ Get all users
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    // ✅ Delete user by ID
+    public boolean deleteUser(Long userId) {
+        if (userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
+            return true;
+        }
+        return false;
     }
 }
