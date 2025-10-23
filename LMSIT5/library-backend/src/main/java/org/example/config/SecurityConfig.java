@@ -51,6 +51,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/books/**").permitAll() // Allow all book operations without authentication for now
                 .requestMatchers("/api/customers/**").permitAll() // Allow customer operations
                 .requestMatchers("/api/dashboard/**").permitAll() // Allow dashboard access
+                .requestMatchers("/api/files/**").permitAll() // Allow file uploads and downloads
+                .requestMatchers("/api/viewer/**").permitAll() // Allow book viewer access
                 .requestMatchers("/api/auth/logout").authenticated()
                 .requestMatchers("/api/cart/**").authenticated()
                 .anyRequest().permitAll()

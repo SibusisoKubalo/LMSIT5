@@ -206,27 +206,6 @@ export default function Books({ username }) {
 
                 {/* Action Buttons */}
                 <div style={{ display: "flex", gap: "8px", justifyContent: "center", flexWrap: "wrap" }}>
-                  {/* PDF Link */}
-                  {b.pdfUrl && (
-                    <a
-                      href={b.pdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        backgroundColor: "#4CAF50",
-                        color: "#fff",
-                        border: "none",
-                        padding: "8px 16px",
-                        borderRadius: "6px",
-                        textDecoration: "none",
-                        fontSize: "12px",
-                        fontWeight: "bold"
-                      }}
-                    >
-                      📄 View PDF
-                    </a>
-                  )}
-
                   {/* Add to Cart Button */}
                   {b.availableCopies > 0 ? (
                     <button
@@ -261,6 +240,24 @@ export default function Books({ username }) {
                       textAlign: "center"
                     }}>
                       📚 Not Available
+                    </div>
+                  )}
+
+                  {/* Digital Content Available Indicator */}
+                  {b.pdfUrl && (
+                    <div style={{
+                      padding: "8px 16px",
+                      backgroundColor: "rgba(76, 175, 80, 0.1)",
+                      color: "#2e7d2e",
+                      border: "1px solid rgba(76, 175, 80, 0.3)",
+                      borderRadius: "6px",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px"
+                    }}>
+                      📖 Digital Copy Available
                     </div>
                   )}
                 </div>
@@ -337,19 +334,38 @@ export default function Books({ username }) {
                     </td>
                     <td style={{ padding: "10px" }}>
                       {!t.returnDate ? (
-                        <button
-                          onClick={() => handleReturn(t.id)}
-                          style={{
-                            backgroundColor: "#f44336",
-                            color: "#fff",
-                            border: "none",
-                            padding: "8px 12px",
-                            borderRadius: "6px",
-                            cursor: "pointer"
-                          }}
-                        >
-                          Return
-                        </button>
+                        <div style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}>
+                          <button
+                            onClick={() => handleReturn(t.id)}
+                            style={{
+                              backgroundColor: "#f44336",
+                              color: "#fff",
+                              border: "none",
+                              padding: "6px 10px",
+                              borderRadius: "4px",
+                              cursor: "pointer",
+                              fontSize: "12px"
+                            }}
+                          >
+                            Return
+                          </button>
+                          {t.book.pdfUrl && (
+                            <button
+                              onClick={() => window.open(`/viewer/${t.book.bookId}`, '_blank')}
+                              style={{
+                                backgroundColor: "#4CAF50",
+                                color: "#fff",
+                                border: "none",
+                                padding: "6px 10px",
+                                borderRadius: "4px",
+                                cursor: "pointer",
+                                fontSize: "12px"
+                              }}
+                            >
+                              📖 View
+                            </button>
+                          )}
+                        </div>
                       ) : (
                         <span style={{ color: "#2e7d2e", fontSize: "12px", fontWeight: "bold" }}>
                           ✅ Returned
