@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useCart } from "../contexts/CartContext";
 import api from "../api";
 
 export default function Books({ username }) {
   const [books, setBooks] = useState([]);
   const [borrowed, setBorrowed] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { addToCart, removeFromCart, isInCart } = useCart();
 
   // Fetch all books
   const fetchBooks = async () => {
@@ -78,6 +80,15 @@ export default function Books({ username }) {
     } catch (err) {
       console.error("Failed to return book:", err.response?.data || err.message);
       alert("Failed to return book: " + (err.response?.data?.error || err.message));
+    }
+  };
+
+  // Add to cart handler
+  const handleAddToCart = (book) => {
+    if (isInCart(book.bookId)) {
+      removeFromCart(book.bookId);
+    } else {
+      addToCart(book);
     }
   };
 
@@ -195,33 +206,6 @@ export default function Books({ username }) {
 
                 {/* Action Buttons */}
                 <div style={{ display: "flex", gap: "8px", justifyContent: "center", flexWrap: "wrap" }}>
-                  {/* Borrow Button */}
-                  {b.availableCopies > 0 ? (
-                    <button
-                      onClick={() => handleBorrow(b.bookId)}
-                      style={{
-                        backgroundColor: "#082155",
-                        color: "#fff",
-                        border: "none",
-                        padding: "8px 16px",
-                        borderRadius: "6px",
-                        cursor: "pointer",
-                        fontSize: "12px",
-                        fontWeight: "bold"
-                      }}
-                    >
-                      📚 Borrow
-                    </button>
-                  ) : (
-                    <span style={{
-                      color: "#999",
-                      fontSize: "12px",
-                      padding: "8px 16px"
-                    }}>
-                      Not Available
-                    </span>
-                  )}
-
                   {/* PDF Link */}
                   {b.pdfUrl && (
                     <a
@@ -241,6 +225,43 @@ export default function Books({ username }) {
                     >
                       📄 View PDF
                     </a>
+                  )}
+
+                  {/* Add to Cart Button */}
+                  {b.availableCopies > 0 ? (
+                    <button
+                      onClick={() => handleAddToCart(b)}
+                      style={{
+                        backgroundColor: isInCart(b.bookId) ? "#d32f2f" : "#007bff",
+                        color: "#fff",
+                        border: "none",
+                        padding: "10px 20px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                        flex: "1 1 120px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}
+                    >
+                      {isInCart(b.bookId) ? "🛒 Remove from Cart" : "➕ Add to Cart"}
+                    </button>
+                  ) : (
+                    <div style={{
+                      padding: "10px 20px",
+                      backgroundColor: "#f5f5f5",
+                      color: "#999",
+                      border: "1px solid #ddd",
+                      borderRadius: "6px",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                      flex: "1 1 120px",
+                      textAlign: "center"
+                    }}>
+                      📚 Not Available
+                    </div>
                   )}
                 </div>
 

@@ -10,6 +10,79 @@ export default function DefaultDashboard() {
         </p>
       </header>
 
+      {/* Mission and Vision Statements */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
+        gap: "30px",
+        marginBottom: "40px"
+      }}>
+        {/* Mission Statement */}
+        <div style={{
+          background: "rgba(255, 255, 255, 0.95)",
+          padding: "25px",
+          borderRadius: "12px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(8, 33, 85, 0.1)"
+        }}>
+          <h2 style={{
+            fontSize: "1.5rem",
+            marginBottom: "15px",
+            color: "#082155",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px"
+          }}>
+            🎯 Our Mission
+          </h2>
+          <p style={{
+            fontSize: "1rem",
+            lineHeight: "1.6",
+            color: "#333",
+            margin: 0
+          }}>
+            To provide accessible, innovative, and comprehensive library services that empower our community
+            through knowledge, technology, and learning resources. We strive to create an inclusive environment
+            where every individual can discover, learn, and grow through our diverse collection of books and
+            digital resources.
+          </p>
+        </div>
+
+        {/* Vision Statement */}
+        <div style={{
+          background: "rgba(255, 255, 255, 0.95)",
+          padding: "25px",
+          borderRadius: "12px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(8, 33, 85, 0.1)"
+        }}>
+          <h2 style={{
+            fontSize: "1.5rem",
+            marginBottom: "15px",
+            color: "#082155",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px"
+          }}>
+            🔮 Our Vision
+          </h2>
+          <p style={{
+            fontSize: "1rem",
+            lineHeight: "1.6",
+            color: "#333",
+            margin: 0
+          }}>
+            To be the leading digital library platform that transforms how people access and engage with
+            knowledge. We envision a future where learning knows no boundaries, where technology seamlessly
+            connects readers with resources, and where our community thrives through shared knowledge and
+            collaborative learning experiences.
+          </p>
+        </div>
+      </div>
+
+      {/* Browse Books Section */}
       <div
         style={{
           display: "flex",

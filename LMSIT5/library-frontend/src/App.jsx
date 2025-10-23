@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import DefaultDashboard from "./pages/DefaultDashboard";
 import Dashboard from "./pages/Dashboard";
 import Books from "./pages/Books";
+import Cart from "./pages/Cart";
 import Notifications from "./pages/Notifications";
 import Library from "./pages/Library";
 import Login from "./pages/Login";
@@ -36,6 +37,7 @@ export default function App() {
               <Route path="/" element={<DefaultDashboard />} />
               <Route path="/defaultdashboard" element={<DefaultDashboard />} />
               <Route path="/about" element={<About />} />
+              <Route path="/cart" element={<Cart username={user?.username} />} />
 
               {/* Customer pages */}
               <Route path="/dashboard" element={user?.role === "CUSTOMER" ? <Dashboard /> : <DefaultDashboard />} />

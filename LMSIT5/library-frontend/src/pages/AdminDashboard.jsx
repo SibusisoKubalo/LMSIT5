@@ -4,7 +4,6 @@ export default function AdminDashboard() {
   const cards = [
     { to: "/adminbooks", title: "📚 Books", desc: "Manage and organize the library’s books." },
     { to: "/admincustomers", title: "👤 Customers", desc: "View, add, and manage customer accounts." },
-    { to: "/adminlibrary", title: "🏛 Libraries", desc: "Oversee library branches and librarians." },
     { to: "/adminnotifications", title: "🔔 Notifications", desc: "Send updates and alerts to users." },
   ];
 

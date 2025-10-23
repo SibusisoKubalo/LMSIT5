@@ -8,7 +8,6 @@ export default function AdminHeader({ user, logout }) {
         <Link to="/admin">Dashboard</Link>
         <Link to="/adminbooks">Manage Books</Link>
         <Link to="/admincustomers">Manage Users</Link>
-        <Link to="/adminlibrary">Manage Libraries</Link>
         <Link to="/adminnotifications">Manage Notifications</Link>
       </nav>
       <div className="user-info">
