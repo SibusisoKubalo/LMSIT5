@@ -12,52 +12,56 @@ export default function DefaultDashboard() {
 
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-          gap: "20px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "40px",
         }}
       >
-        {[
-          { title: "📖 Browse Books", desc: "See what’s available in our library.", link: "/books" },
-          { title: "👤 Sign Up", desc: "Create an account to borrow books and track your activity.", link: "/signup" },
-          { title: "🔐 Login", desc: "Already have an account? Log in to continue.", link: "/login" },
-        ].map((card) => (
-          <Link
-            key={card.title}
-            to={card.link}
+        <Link
+          to="/books"
+          style={{
+            textDecoration: "none",
+            color: "#082155",
+            backgroundColor: "#97aff0ff",
+            padding: "30px 40px",
+            borderRadius: "12px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            transition: "all 0.3s ease",
+            width: "300px",
+            textAlign: "center",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "translateY(-5px)";
+            e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.2)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "translateY(0)";
+            e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+          }}
+        >
+          <h2 style={{ marginBottom: "15px", fontSize: "1.5rem" }}>📖 Browse Books</h2>
+          <p style={{ marginBottom: "20px", lineHeight: "1.5" }}>See what's available in our library.</p>
+          <button
             style={{
-              textDecoration: "none",
-              color: "#082155",
-              backgroundColor: "#97aff0ff",
-              padding: "20px",
-              borderRadius: "12px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              transition: "transform 0.2s",
+              padding: "12px 24px",
+              backgroundColor: "#082155",
+              color: "#fff",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontWeight: "bold",
+              fontSize: "16px",
+              transition: "background 0.3s ease",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-5px)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
           >
-            <h2 style={{ marginBottom: "10px" }}>{card.title}</h2>
-            <p>{card.desc}</p>
-            <button
-              style={{
-                marginTop: "10px",
-                padding: "10px",
-                backgroundColor: "#082155",
-                color: "#fff",
-                border: "none",
-                borderRadius: "8px",
-                cursor: "pointer",
-                fontWeight: "bold",
-              }}
-            >
-              Go
-            </button>
-          </Link>
-        ))}
+            Go
+          </button>
+        </Link>
       </div>
     </div>
   );

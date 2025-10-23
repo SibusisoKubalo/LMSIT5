@@ -1,5 +1,5 @@
 import { useState } from "react";       // ✅ import useState
-import { useNavigate } from "react-router-dom"; // ✅ import useNavigate
+import { useNavigate, Link } from "react-router-dom"; // ✅ import useNavigate and Link
 import api from "../api";
 
 export default function Login({ setUser }) {
@@ -67,6 +67,20 @@ const buttonStyle = {
   fontFamily: "Arial, sans-serif",
 };
 
+  const linkStyle = {
+    textAlign: "center",
+    marginTop: "15px",
+    fontSize: "14px",
+    color: "#666",
+  };
+
+  const createAccountLinkStyle = {
+    color: "#082155",
+    textDecoration: "none",
+    fontWeight: "bold",
+    marginLeft: "5px",
+  };
+
 // LOGIN COMPONENT
 return (
   <div style={formStyle}>
@@ -76,6 +90,12 @@ return (
       <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} style={inputStyle} required />
       <button type="submit" style={buttonStyle}>Login</button>
     </form>
+    <div style={linkStyle}>
+      No Account?
+      <Link to="/signup" style={createAccountLinkStyle}>
+        Create one
+      </Link>
+    </div>
   </div>
 );
 }
